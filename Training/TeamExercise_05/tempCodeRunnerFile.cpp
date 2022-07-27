@@ -1,1 +1,0 @@
-NODE b = link[a.point][i];
