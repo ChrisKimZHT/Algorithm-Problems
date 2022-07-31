@@ -2,64 +2,47 @@
 
 using namespace std;
 
-const int SIZE = 100010;
+const int SIZE = 100010; // 链表长度
 
-int head, idx;
-int value[SIZE], nxt[SIZE];
+int head, idx;            // 头指针、数组位数
+int val[SIZE], nxt[SIZE]; // 链表数据、下一位指针
 
+// 初始化静态链表
 void init()
 {
     head = -1;
     idx = 0;
 }
 
+// 头插元素
 void push_front(int x)
 {
-    value[idx] = x;
+    val[idx] = x;
     nxt[idx] = head;
     head = idx;
     idx++;
 }
 
-void push_back(int x)
+// 在第pos位元素后插入x（元素序号从0开始）
+void insert(int pos, int x)
 {
-    value[idx] = x;
-    nxt[idx] = -1;
-    int t = head;
-    while (nxt[t] != -1)
-        t = nxt[t];
-    nxt[t] = idx;
-    idx++;
-}
-
-void array_insert(int pos, int x)
-{
-    value[idx] = x;
+    val[idx] = x;
     nxt[idx] = nxt[pos];
     nxt[pos] = idx;
     idx++;
 }
 
-void list_insert(int pos, int x)
-{
-    value[idx] = x;
-    int t = head;
-    for (int i = 0; i < pos; i++)
-        t = nxt[t];
-    nxt[idx] = nxt[t];
-    nxt[t] = idx;
-    idx++;
-}
-
+// 删除第pos位元素，不可删除节点0
 void erase(int pos)
 {
     nxt[pos] = nxt[nxt[pos]];
 }
 
+// 遍历输出
 void print()
 {
     for (int i = head; i != -1; i = nxt[i])
-        cout << value[i] << ' ';
+        cout << val[i] << ' ';
     cout << endl;
 }
 
@@ -69,10 +52,8 @@ int main(void)
     push_front(1);
     push_front(3);
     push_front(6);
-    push_back(100);
     push_front(101);
-    push_back(6);
-    list_insert(3, -10);
+    insert(3, -10);
     print();
     return 0;
 }
