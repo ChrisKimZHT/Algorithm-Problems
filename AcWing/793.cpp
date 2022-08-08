@@ -2,33 +2,40 @@
 
 using namespace std;
 
-vector<int> mul(vector<int> &A, int b)
+vector<int> mul(vector<int> a, int b)
 {
-    vector<int> C;
-    int t = 0;
-    for (int i = 0; i < A.size() || t; i++)
+    vector<int> ans;
+    if (!b)
     {
-        if (i < A.size())
-            t += A[i] * b;
-        C.push_back(t % 10);
+        ans.push_back(0);
+        return ans;
+    }
+    int t = 0;
+    for (int i = 0; i < a.size(); i++)
+    {
+        t += a[i] * b;
+        ans.push_back(t % 10);
         t /= 10;
     }
-    while (C.size() > 1 && C.back() == 0)
-        C.pop_back();
-    return C;
+    while (t)
+    {
+        ans.push_back(t % 10);
+        t /= 10;
+    }
+    return ans;
 }
 
 int main()
 {
-    string a;
+    string sa;
     int b;
-    vector<int> A;
-    cin >> a >> b;
-    for (int i = a.size() - 1; i >= 0; i--)
-        A.push_back(a[i] - '0');
-    vector<int> C = mul(A, b);
-    for (int i = C.size() - 1; i >= 0; i--)
-        cout << C[i];
+    cin >> sa >> b;
+    vector<int> a, c;
+    for (int i = sa.size() - 1; i >= 0; i--)
+        a.push_back(sa[i] - '0');
+    c = mul(a, b);
+    for (int i = c.size() - 1; i >= 0; i--)
+        cout << c[i];
     cout << endl;
     return 0;
 }

@@ -2,35 +2,34 @@
 
 using namespace std;
 
-vector<int> div(vector<int> &A, int b, int &r)
+pair<vector<int>, int> div(vector<int> &a, int b)
 {
-    vector<int> C;
-    r = 0;
-    for (int i = A.size() - 1; i >= 0; i--)
+    vector<int> ans;
+    int t = 0;
+    for (int i = a.size() - 1; i >= 0; i--)
     {
-        r = r * 10 + A[i];
-        C.push_back(r / b);
-        r %= b;
+        t = t * 10 + a[i];
+        ans.push_back(t / b);
+        t %= b;
     }
-    reverse(C.begin(), C.end());
-    while (C.size() > 1 && C.back() == 0)
-        C.pop_back();
-    return C;
+    reverse(ans.begin(), ans.end());
+    while (!ans.back() && ans.size() - 1)
+        ans.pop_back();
+    return {ans, t};
 }
 
 int main()
 {
-    string a;
+    string sa;
     int b;
-    vector<int> A;
-    cin >> a >> b;
-    for (int i = a.size() - 1; i >= 0; i--)
-        A.push_back(a[i] - '0');
-    int r;
-    vector<int> C = div(A, b, r);
-    for (int i = C.size() - 1; i >= 0; i--)
-        cout << C[i];
+    cin >> sa >> b;
+    vector<int> a;
+    for (int i = sa.size() - 1; i >= 0; i--)
+        a.push_back(sa[i] - '0');
+    auto ans = div(a, b);
+    for (int i = ans.first.size() - 1; i >= 0; i--)
+        cout << ans.first[i];
     cout << endl
-         << r << endl;
+         << ans.second << endl;
     return 0;
 }

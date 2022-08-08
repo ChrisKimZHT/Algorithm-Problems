@@ -2,7 +2,8 @@
 
 using namespace std;
 
-int tmp[int(1e5 + 10)];
+const int MAXN = 1e5 + 10;
+int arr[MAXN], tmp[MAXN];
 void merge_sort(int arr[], int l, int r)
 {
     if (l >= r)
@@ -10,27 +11,27 @@ void merge_sort(int arr[], int l, int r)
     int mid = (l + r) / 2;
     merge_sort(arr, l, mid);
     merge_sort(arr, mid + 1, r);
-    int i = l, j = mid + 1, k = 0;
-    while (i <= mid && j <= r)
+    int a = l, b = mid + 1, idx = 0;
+    while (a <= mid && b <= r)
     {
-        if (arr[i] <= arr[j])
-            tmp[k++] = arr[i++];
+        if (arr[a] <= arr[b])
+            tmp[idx++] = arr[a++];
         else
-            tmp[k++] = arr[j++];
+            tmp[idx++] = arr[b++];
     }
-    while (i <= mid)
-        tmp[k++] = arr[i++];
-    while (j <= r)
-        tmp[k++] = arr[j++];
-    for (int m = l, n = 0; m <= r; m++, n++)
-        arr[m] = tmp[n];
+    while (a <= mid)
+        tmp[idx++] = arr[a++];
+    while (b <= r)
+        tmp[idx++] = arr[b++];
+    for (int i = 0, j = l; j <= r; i++, j++)
+        arr[j] = tmp[i];
 }
 
 int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
-    int arr[100010], n;
+    int n;
     cin >> n;
     for (int i = 0; i < n; i++)
         cin >> arr[i];

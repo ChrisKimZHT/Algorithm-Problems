@@ -6,20 +6,22 @@ void quicksort(int arr[], int l, int r)
 {
     if (l >= r)
         return;
-    int x = arr[(l + r) / 2], i = l - 1, j = r + 1;
-    while (i < j)
+    int x = arr[(l + r) / 2], a = l - 1, b = r + 1;
+    while (a < b)
     {
         do
-            i++;
-        while (arr[i] < x);
+        {
+            a++;
+        } while (arr[a] < x);
         do
-            j--;
-        while (arr[j] > x);
-        if (i < j)
-            swap(arr[i], arr[j]);
+        {
+            b--;
+        } while (arr[b] > x);
+        if (a < b)
+            swap(arr[a], arr[b]);
     }
-    quicksort(arr, l, j);
-    quicksort(arr, j + 1, r);
+    quicksort(arr, l, b);
+    quicksort(arr, b + 1, r);
 }
 
 int main()
