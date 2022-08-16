@@ -2,46 +2,47 @@
 
 using namespace std;
 
-const int MAXN = 1e6 + 10;
-int heap[MAXN], ph[MAXN], hp[MAXN], idx, id;
+const int MAXN = 1e5 + 10;
+int heap[MAXN], idx, no;
+int ph[MAXN], hp[MAXN];
 
 inline void heap_swap(int a, int b)
 {
+    swap(heap[a], heap[b]);
     swap(ph[hp[a]], ph[hp[b]]);
     swap(hp[a], hp[b]);
-    swap(heap[a], heap[b]);
 }
 
-void down(int u)
+void up(int x)
 {
-    int t = u;
-    if (u * 2 <= idx && heap[u * 2] < heap[t])
-        t = u * 2;
-    if (u * 2 + 1 <= idx && heap[u * 2 + 1] < heap[t])
-        t = u * 2 + 1;
-    if (t != u)
+    while (x / 2 && heap[x / 2] > heap[x])
     {
-        heap_swap(t, u);
-        down(t);
+        heap_swap(x / 2, x);
+        x /= 2;
     }
 }
 
-void up(int u)
+void down(int x)
 {
-    while (u / 2 && heap[u] < heap[u / 2])
+    int m = x;
+    if (x * 2 <= idx && heap[m] > heap[x * 2])
+        m = x * 2;
+    if (x * 2 + 1 <= idx && heap[m] > heap[x * 2 + 1])
+        m = x * 2 + 1;
+    if (m != x)
     {
-        heap_swap(u, u / 2);
-        u /= 2;
+        heap_swap(m, x);
+        down(m);
     }
 }
 
-inline void insert(int num)
+void insert(int x)
 {
     idx++;
-    id++;
-    heap[idx] = num;
-    ph[id] = idx;
-    hp[idx] = id;
+    no++;
+    heap[idx] = x;
+    ph[no] = idx;
+    hp[idx] = no;
     up(idx);
 }
 
@@ -50,28 +51,28 @@ inline int minimum()
     return heap[1];
 }
 
-inline void erase()
+void erase()
 {
     heap_swap(1, idx);
     idx--;
     down(1);
 }
 
-inline void erase(int id)
+void erase(int k)
 {
-    int k = ph[id];
-    heap_swap(k, idx);
+    int x = ph[k];
+    heap_swap(x, idx);
     idx--;
-    up(k);
-    down(k);
+    down(x);
+    up(x);
 }
 
-inline void modify(int id, int num)
+void modify(int k, int num)
 {
-    int k = ph[id];
-    heap[k] = num;
-    up(k);
-    down(k);
+    int x = ph[k];
+    heap[x] = num;
+    down(x);
+    up(x);
 }
 
 int main()

@@ -3,52 +3,47 @@
 using namespace std;
 
 const int MAXN = 1e6 + 10;
-int son[MAXN][26], cnt[MAXN], idx;
+int trie[MAXN][26], cnt[MAXN], idx;
 
-void insert(char str[])
+void insert(string &str)
 {
-    int p = 0;
-    for (int i = 0; str[i]; i++)
+    int t = 0;
+    for (int i = 0; i < str.size(); i++)
     {
         int c = str[i] - 'a';
-        if (!son[p][c])
-            son[p][c] = ++idx;
-        p = son[p][c];
+        if (!trie[t][c])
+            trie[t][c] = ++idx;
+        t = trie[t][c];
     }
-    cnt[p]++;
+    cnt[t]++;
 }
 
-int query(char str[])
+int query(string &str)
 {
-    int p = 0;
-    for (int i = 0; str[i]; i++)
+    int t = 0;
+    for (int i = 0; i < str.size(); i++)
     {
         int c = str[i] - 'a';
-        if (!son[p][c])
+        if (!trie[t][c])
             return 0;
-        p = son[p][c];
+        t = trie[t][c];
     }
-    return cnt[p];
+    return cnt[t];
 }
 
 int main()
 {
     int N;
     cin >> N;
-    char op, tmp[MAXN];
     while (N--)
     {
-        cin >> op;
+        char op;
+        string str;
+        cin >> op >> str;
         if (op == 'I')
-        {
-            cin >> tmp;
-            insert(tmp);
-        }
+            insert(str);
         else
-        {
-            cin >> tmp;
-            cout << query(tmp) << endl;
-        }
+            cout << query(str) << endl;
     }
     return 0;
 }

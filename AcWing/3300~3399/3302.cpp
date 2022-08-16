@@ -2,26 +2,35 @@
 
 using namespace std;
 
-stack<int> num;
-stack<char> oper;
-unordered_map<char, int> ump{{'+', 1}, {'-', 1}, {'*', 2}, {'/', 2}};
+unordered_map<char, int> pri = {{'+', 1}, {'-', 1}, {'*', 2}, {'/', 2}};
+stack<char> os;
+stack<int> ns;
 
 void calc()
 {
-    int a = num.top();
-    num.pop();
-    int b = num.top();
-    num.pop();
-    char op = oper.top();
-    oper.pop();
-    if (op == '+')
-        num.push(b + a);
-    else if (op == '-')
-        num.push(b - a);
-    else if (op == '*')
-        num.push(b * a);
-    else if (op == '/')
-        num.push(b / a);
+    char oper = os.top();
+    os.pop();
+    int a = ns.top();
+    ns.pop();
+    int b = ns.top();
+    ns.pop();
+    switch (oper)
+    {
+    case '+':
+        ns.push(b + a);
+        break;
+    case '-':
+        ns.push(b - a);
+        break;
+    case '*':
+        ns.push(b * a);
+        break;
+    case '/':
+        ns.push(b / a);
+        break;
+    default:
+        break;
+    }
 }
 
 int main()
@@ -32,35 +41,34 @@ int main()
     {
         if (isdigit(exp[i]))
         {
-            int n = 0, pos = i;
-            while (pos < exp.size() && isdigit(exp[pos]))
+            int pos = i, num = 0;
+            while (isdigit(exp[pos]) && pos < exp.size())
             {
-                n *= 10;
-                n += exp[pos] - '0';
+                num = num * 10 + exp[pos] - '0';
                 pos++;
             }
-            num.push(n);
-            i = pos - 1; // 与for循环的++抵消
+            ns.push(num);
+            i = pos - 1;
         }
         else if (exp[i] == '(')
         {
-            oper.push(exp[i]);
+            os.push(exp[i]);
         }
         else if (exp[i] == ')')
         {
-            while (oper.top() != '(')
+            while (os.top() != '(')
                 calc();
-            oper.pop();
+            os.pop();
         }
         else
         {
-            while (oper.size() && ump[oper.top()] >= ump[exp[i]])
+            while (!os.empty() && pri[exp[i]] <= pri[os.top()])
                 calc();
-            oper.push(exp[i]);
+            os.push(exp[i]);
         }
     }
-    while (oper.size())
+    while (!os.empty())
         calc();
-    cout << num.top() << endl;
+    cout << ns.top() << endl;
     return 0;
 }

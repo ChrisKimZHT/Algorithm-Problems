@@ -4,66 +4,38 @@ using namespace std;
 
 const int MAXN = 1e6 + 10;
 int n, k;
-int val[MAXN];
-// int q[MAXN], h = 0, t = -1;
-deque<int> q;
+int num[MAXN];
+int que[MAXN], head = 0, tail = -1;
 
 int main()
 {
     cin >> n >> k;
     for (int i = 0; i < n; i++)
-        cin >> val[i];
-    // for (int i = 0; i < n; i++)
-    // {
-    //     while (h <= t && val[q[t]] > val[i])
-    //         t--;
-    //     q[++t] = i;
-    //     if (i >= k - 1)
-    //     {
-    //         if (q[h] < i - k + 1)
-    //             h++;
-    //         cout << val[q[h]] << ' ';
-    //     }
-    // }
-    // cout << endl;
-    // h = 0, t = -1;
-    // for (int i = 0; i < n; i++)
-    // {
-    //     while (h <= t && val[q[t]] < val[i])
-    //         t--;
-    //     q[++t] = i;
-    //     if (i >= k - 1)
-    //     {
-    //         if (q[h] < i - k + 1)
-    //             h++;
-    //         cout << val[q[h]] << ' ';
-    //     }
-    // }
-    // cout << endl;
+        cin >> num[i];
     for (int i = 0; i < n; i++)
     {
-        while (!q.empty() && val[q.back()] > val[i])
-            q.pop_back();
-        q.push_back(i);
+        while (tail >= head && num[que[tail]] > num[i])
+            tail--;
+        que[++tail] = i;
         if (i >= k - 1)
         {
-            if (q.front() < i - k + 1)
-                q.pop_front();
-            cout << val[q.front()] << ' ';
+            if (que[head] <= i - k)
+                head++;
+            cout << num[que[head]] << ' ';
         }
     }
     cout << endl;
-    q.clear();
+    head = 0, tail = -1;
     for (int i = 0; i < n; i++)
     {
-        while (!q.empty() && val[q.back()] < val[i])
-            q.pop_back();
-        q.push_back(i);
+        while (tail >= head && num[que[tail]] < num[i])
+            tail--;
+        que[++tail] = i;
         if (i >= k - 1)
         {
-            if (q.front() < i - k + 1)
-                q.pop_front();
-            cout << val[q.front()] << ' ';
+            if (que[head] <= i - k)
+                head++;
+            cout << num[que[head]] << ' ';
         }
     }
     cout << endl;

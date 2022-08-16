@@ -11,7 +11,7 @@ void insert(int num)
     int p = 0;
     for (int i = 30; i >= 0; i--)
     {
-        int c = num >> i & 1;
+        int c = (num >> i) % 2;
         if (!son[p][c])
             son[p][c] = ++idx;
         p = son[p][c];
@@ -23,16 +23,16 @@ int search(int num)
     int p = 0, ans = 0;
     for (int i = 30; i >= 0; i--)
     {
-        int c = num >> i & 1;
+        int c = (num >> i) % 2;
         if (son[p][!c])
         {
-            p = son[p][!c];
             ans = ans * 2 + 1;
+            p = son[p][!c];
         }
         else
         {
-            p = son[p][c];
             ans = ans * 2;
+            p = son[p][c];
         }
     }
     return ans;
