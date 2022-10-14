@@ -16,21 +16,16 @@ void solve()
         int idx = -1;
         for (int j = 0; j < n; j++)
         {
-            if (!vis[j] && tmp < (pre | a[j]))
+            if (!vis[j] && tmp <= (pre | a[j]))
             {
                 tmp = (pre | a[j]);
                 idx = j;
             }
         }
-        if (idx == -1)
-            break;
         pre = tmp;
         cout << a[idx] << ' ';
         vis[idx] = true;
     }
-    for (int i = 0; i < n; i++)
-        if (!vis[i])
-            cout << a[i] << ' ';
     cout << endl;
 }
 
