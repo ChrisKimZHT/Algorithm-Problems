@@ -9,7 +9,7 @@ void solve()
     vector<int> a(n + 1);
     for (int i = 1; i <= n; i++)
         cin >> a[i];
-    priority_queue<pair<int, int>> inv;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> inv;
     for (int i = 1; i < n; i++)
         if (a[i] > a[i + 1])
             inv.push({a[i] - a[i + 1], i + 1});

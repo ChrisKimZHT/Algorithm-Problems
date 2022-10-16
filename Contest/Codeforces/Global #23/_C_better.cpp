@@ -2,22 +2,22 @@
 
 using namespace std;
 
+const int MAXN = 1e5 + 10;
+int ans[MAXN];
+
 void solve()
 {
-    int n, k;
-    cin >> n >> k;
-    bool have_one = false;
+    int n;
+    cin >> n;
     for (int i = 1; i <= n; i++)
     {
         int t;
         cin >> t;
-        if (t)
-            have_one = true;
+        ans[t] = i % n + 1;
     }
-    if (have_one)
-        cout << "YES" << endl;
-    else
-        cout << "NO" << endl;
+    for (int i = 1; i <= n; i++)
+        cout << ans[i] << ' ';
+    cout << endl;
 }
 
 int main()
