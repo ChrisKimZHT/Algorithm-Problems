@@ -2,6 +2,7 @@
 !*.*
 !*/
 .vscode
+.cph
 *.exe
 tempCodeRunnerFile.*
 test.*
