@@ -14,39 +14,29 @@ void solve()
         cout << x << endl;
         return;
     }
-    ll nxorx = n ^ x, nandx = n & x;
-    if (nandx != x)
+    if ((n & x) != x)
     {
         cout << -1 << endl;
         return;
     }
-    ll cnt_digx = 0, cnt_dign = 0;
-    while (n >> cnt_dign)
-        cnt_dign++;
-    while (x >> cnt_digx)
-        cnt_digx++;
-    ll max_dig = max(cnt_dign, cnt_digx), dig = 0;
-    for (int i = max_dig - 1; i >= 0; i--)
+    ll dig = 0;
+    for (int i = 59; i >= 0; i--)
     {
-        if ((nxorx >> i) & 1)
+        if (((n ^ x) >> i) & 1)
         {
             dig = i;
             break;
         }
     }
-    for (int i = 0; i < max_dig; i++)
+    for (int i = dig + 1; i >= 0; i--)
     {
-        if ((nandx >> i) & 1)
+        if (((n & x) >> i) & 1)
         {
-            if (i - 1 <= dig)
-            {
-                cout << -1 << endl;
-                return;
-            }
+            cout << -1 << endl;
+            return;
         }
     }
-    ll ans = x | (1ll << (dig + 1));
-    cout << ans << endl;
+    cout << (x | (1ll << (dig + 1))) << endl;
 }
 
 int main()

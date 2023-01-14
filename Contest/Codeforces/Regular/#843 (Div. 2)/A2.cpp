@@ -7,11 +7,6 @@ void solve()
 {
     string s;
     cin >> s;
-    if (s.find('a') == s.npos)
-    {
-        cout << s.front() << ' ' << s.substr(1, s.size() - 2) << ' ' << s.back() << endl;
-        return;
-    }
     for (int i = 1; i < s.size() - 1; i++)
     {
         if (s[i] == 'a')
