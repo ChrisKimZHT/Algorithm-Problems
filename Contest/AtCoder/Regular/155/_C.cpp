@@ -3,31 +3,31 @@
 
 using namespace std;
 
-vector<int> normalize(vector<int> &v)
+// 计算类型: 0-无相邻 1-有相邻 2-全奇数
+int type(vector<int> &v)
 {
-    bool is_adj = false;
-    int last = -3;
-    int cnt_odd = 0;
-    for (auto ele : v)
-        if (ele % 2)
-            cnt_odd++;
-    if (cnt_odd == v.size())
-        return v;
+    int last = -3, cnt_odd = 0, ans = 0;
     for (int i = 0; i < v.size(); i++)
     {
         if (v[i] % 2)
         {
             if (i - last <= 2)
-            {
-                is_adj = true;
-                break;
-            }
+                ans = 1;
             last = i;
+            cnt_odd++;
         }
     }
-    if (!is_adj)
+    if (cnt_odd == v.size())
+        ans = 2;
+    return ans;
+}
+
+// 计算标准型
+vector<int> norm(vector<int> &v, int type)
+{
+    if (type == 0)
     {
-        last = -1;
+        int last = -1;
         for (int i = 0; i < v.size(); i++)
         {
             if (v[i] % 2)
@@ -40,7 +40,7 @@ vector<int> normalize(vector<int> &v)
         sort(v.begin() + last + 1, v.end());
         return v;
     }
-    else
+    else if (type == 1)
     {
         vector<int> odd, even;
         for (auto ele : v)
@@ -56,6 +56,7 @@ vector<int> normalize(vector<int> &v)
         odd.insert(odd.end(), even.begin(), even.end());
         return odd;
     }
+    return v;
 }
 
 int main()
@@ -70,9 +71,12 @@ int main()
         cin >> A[i];
     for (int i = 0; i < N; i++)
         cin >> B[i];
-    if (normalize(A) == normalize(B))
-        cout << "Yes" << endl;
-    else
+    int ia = type(A), ib = type(B); // 计算类型
+    if (ia != ib)                   // 类型不同直接判假
         cout << "No" << endl;
+    else if (ia == 2) // 若均为全奇数类型，比对原型
+        cout << (A == B ? "Yes" : "No") << endl;
+    else // 若为无相邻或有相邻类型，比对标准型
+        cout << (norm(A, ia) == norm(B, ib) ? "Yes" : "No") << endl;
     return 0;
 }
