@@ -2,11 +2,11 @@
 
 using namespace std;
 
-typedef long long LL;
+typedef long long ll;
 const int MAXN = 30;
 int n;
 
-LL exgcd(LL a, LL b, LL &x, LL &y)
+ll exgcd(ll a, ll b, ll &x, ll &y)
 {
     if (!b)
     {
@@ -14,32 +14,40 @@ LL exgcd(LL a, LL b, LL &x, LL &y)
         y = 0;
         return a;
     }
-    LL d = exgcd(b, a % b, y, x);
+    ll d = exgcd(b, a % b, y, x);
     y -= a / b * x;
     return d;
+}
+
+// first-a second-mod
+pair<ll, ll> excrt(pair<ll, ll> a, pair<ll, ll> b)
+{
+    ll ya, yb;
+    ll d = exgcd(a.second, b.second, ya, yb);
+    if ((b.first - a.first) % d)
+        return {-1, -1};
+    ya *= (b.first - a.first) / d;
+    ll tmp = b.second / d;
+    ya = (ya % tmp + tmp) % tmp;
+    a.first += a.second * ya;
+    a.second = a.second / d * b.second;
+    return a;
 }
 
 int main()
 {
     cin >> n;
-    LL a1, m1;
-    cin >> a1 >> m1;
+    pair<ll, ll> a;
+    cin >> a.second >> a.first;
     for (int i = 2; i <= n; i++)
     {
-        LL a2, m2, y1, y2;
-        cin >> a2 >> m2;
-        LL d = exgcd(a1, a2, y1, y2);
-        if ((m2 - m1) % d)
-        {
-            cout << -1 << endl;
-            return 0;
-        }
-        y1 *= (m2 - m1) / d;
-        LL tmp = a2 / d;
-        y1 = (y1 % tmp + tmp) % tmp;
-        m1 += a1 * y1;
-        a1 = a1 / d * a2;
+        pair<ll, ll> b;
+        cin >> b.second >> b.first;
+        a = excrt(a, b);
     }
-    cout << (m1 % a1 + a1) % a1 << endl;
+    if (a.first == -1)
+        cout << -1 << endl;
+    else
+        cout << (a.first % a.second + a.second) % a.second << endl;
     return 0;
 }
