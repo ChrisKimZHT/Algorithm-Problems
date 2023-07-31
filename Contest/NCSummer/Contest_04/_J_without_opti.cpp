@@ -18,18 +18,18 @@ void solve()
     {
         for (int j = m; j >= -m; j--)
         {
-            if (j > 0)
+            if (j >= 0)
             {
-                for (int k = m; k >= -j; k--)
+                for (int k = m; k >= j - m; k--)
                 {
-                    dp[i][k + m] = (dp[i][k + m] + dp[i - 1][j + m]) % MOD;
+                    dp[i][j + m] = (dp[i][j + m] + dp[i - 1][k + m]) % MOD;
                 }
             }
             else
             {
-                for (int k = m + j; k >= 0; k--)
+                for (int k = m; k >= -j; k--)
                 {
-                    dp[i][k + m] = (dp[i][k + m] + dp[i - 1][j + m]) % MOD;
+                    dp[i][j + m] = (dp[i][j + m] + dp[i - 1][k + m]) % MOD;
                 }
             }
         }
