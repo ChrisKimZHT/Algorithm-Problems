@@ -1,5 +1,31 @@
 数据结构与算法模板
 
+# 0. 要点
+
+Eng. Ver.
+
+```cpp
+/* stuff you should look for
+ * int overflow, array bounds
+ * special cases (n=1?)
+ * do something instead of nothing and stay organized
+ * WRITE STUFF DOWN
+ * DON'T GET STUCK ON ONE APPROACH
+ */
+```
+
+Chs. Ver.
+
+```cpp
+/* 你应该注意的东西
+ * int溢出，数组边界
+ * 特殊情况(n=1?)
+ * 做一些事情而不是什么也不做，保证效率
+ * 把东西写在纸上
+ * 不要在一个地方死磕
+ */
+```
+
 # 1. VSC Snippet
 
 ## 1.1. Json 源文件
