@@ -1886,6 +1886,54 @@ int do_something(int a, int b)
 }
 ```
 
+## 2.25. 字符串哈希
+
+### 2.25.1. 哈希
+
+$p$ 可取 $131,13331$，模可使用自然溢出。
+
+```cpp
+typedef unsigned long long ull;
+constexpr ull P = 449, MOD = 436522843;
+
+ull get_hash(string &s)
+{
+    ull res = 0;
+    for (int i = 0; i < s.size(); i++)
+        res = (res * P % MOD + s[i]) % MOD;
+    return res;
+}
+```
+
+### 2.25.2. 子串哈希
+
+预处理：$O(n)$
+
+计算：$O(1)$
+
+```cpp
+typedef unsigned long long ull;
+constexpr ull P = 449, MOD = 436522843;
+constexpr int MAXN = 1e6 + 10;
+ull p[MAXN], h[MAXN];
+char s[MAXN]; // 下标从1开始，如果要用string注意下标修改
+
+void init()
+{
+    p[0] = 1;
+    for (int i = 1; i <= n; i++)
+    {
+        p[i] = p[i - 1] * P % MOD;
+        h[i] = (h[i - 1] * P % MOD + s[i]) % MOD;
+    }
+}
+
+ull sub_hash(int l, int r)
+{
+    return (h[r] - h[l - 1] * p[r - l + 1] % MOD + MOD) % MOD;
+}
+```
+
 # 3. 数据结构
 
 ## 3.1. 单调队列 Monotonic Queue
