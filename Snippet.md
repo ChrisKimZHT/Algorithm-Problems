@@ -391,7 +391,71 @@ ll fast_pow(ll a, ll b)
 
 时间复杂度：$O(n+m)$
 
-### 2.9.1. 计算部分匹配表
+### 2.9.1. 类封装
+
+使用时先构造 `KMP`，传入参数为**模式串（Pattern）**.
+
+匹配时调用 `.find()`，传入参数为**主串（Text）**.
+
+```cpp
+class KMP
+{
+    vector<int> nxt;
+    string pat;
+
+public:
+    KMP(string &s)
+    {
+        pat = s;
+        int n = pat.length();
+        int j = 0;
+        nxt.resize(n);
+        for (int i = 1; i < n; i++)
+        {
+            while (j > 0 && pat[i] != pat[j])
+                j = nxt[j - 1];
+            if (pat[i] == pat[j])
+                j++;
+            nxt[i] = j;
+        }
+    }
+    vector<int> find(string &txt)
+    {
+        int n = pat.length(), m = txt.length();
+        int j = 0;
+        vector<int> ans;
+        for (int i = 0; i < m; i++)
+        {
+            while (j > 0 && txt[i] != pat[j])
+                j = nxt[j - 1];
+            if (txt[i] == pat[j])
+                j++;
+            if (j == n)
+            {
+                ans.push_back(i - n + 1);
+                j = nxt[j - 1];
+            }
+        }
+        return ans;
+    }
+    set<int> get_border()
+    {
+        set<int> s;
+        int cur = nxt.back();
+        while (cur)
+        {
+            s.insert(cur);
+            cur = nxt[cur - 1];
+        }
+        s.insert(0);
+        return s;
+    }
+};
+```
+
+### 2.9.1. 旧模板
+
+**计算部分匹配表**
 
 ```cpp
 char s1[MAXN]; // 主串
@@ -418,7 +482,7 @@ void getnext(void)
 }
 ```
 
-### 2.9.2. KMP 本体（找所有匹配）
+**找所有匹配**
 
 ```cpp
 char s1[MAXN]; // 主串
@@ -447,7 +511,7 @@ void kmp(void)
 }
 ```
 
-### 2.9.3. KMP 本体（第一个匹配）
+**找第一个匹配**
 
 ```cpp
 char s1[MAXN]; // 主串
@@ -1931,6 +1995,47 @@ void init()
 ull sub_hash(int l, int r)
 {
     return (h[r] - h[l - 1] * p[r - l + 1] % MOD + MOD) % MOD;
+}
+```
+
+## 2.26. Manacher 算法
+
+### 2.26.1. 预处理
+
+```cpp
+string pre_process(string &s)
+{
+    string ans = "^";
+    for (auto &c : s)
+    {
+        ans += '#';
+        ans += c;
+    }
+    ans += '#';
+    ans += '$';
+    return ans;
+}
+```
+
+### 2.26.2. 马拉车
+
+```cpp
+// s - 字符串（下标1开始，需要预处理）
+// p - 对应位置回文半径
+void manacher(string &s, vector<int> &p)
+{
+    int r = 0, mid = 0;
+    for (int i = 1; i < s.size() - 1; i++)
+    {
+        p[i] = r > i ? min(p[2 * mid - i], r - i) : 1;
+        while (s[i + p[i]] == s[i - p[i]])
+            p[i]++;
+        if (i + p[i] > r)
+        {
+            r = i + p[i];
+            mid = i;
+        }
+    }
 }
 ```
 
