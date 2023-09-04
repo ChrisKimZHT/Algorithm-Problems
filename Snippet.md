@@ -2039,6 +2039,45 @@ void manacher(string &s, vector<int> &p)
 }
 ```
 
+## 2.27. 拓扑排序 Topo Sort
+
+时间复杂度：$O(V+E)$
+
+```cpp
+constexpr int MAXN = 5050;
+int h[MAXN], e[MAXN], d[MAXN], ne[MAXN], idx;
+int que[MAXN];
+
+void add(int a, int b)
+{
+    idx++;
+    d[b]++;
+    e[idx] = b;
+    ne[idx] = h[a];
+    h[a] = idx;
+}
+
+bool topo_sort(int n) // n - vertice cnt
+{
+    int hh = 0, tt = -1;
+    for (int i = 1; i <= n; i++)
+        if (!d[i])
+            que[++tt] = i;
+    while (hh <= tt)
+    {
+        int &now = que[hh++];
+        for (int i = h[now]; i; i = ne[i])
+        {
+            int &nxt = e[i];
+            d[nxt]--;
+            if (!d[nxt])
+                que[++tt] = nxt;
+        }
+    }
+    return tt == n - 1; // false if illegal
+}
+```
+
 # 3. 数据结构
 
 ## 3.1. 单调队列 Monotonic Queue
