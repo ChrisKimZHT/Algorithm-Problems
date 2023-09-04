@@ -43,10 +43,13 @@ int bfs(int src, int dest)
             }
             else if (!(stat == 2 && chr == 'T'))
             {
-                if (!vis[nxt][0])
+                int stat = 0;
+                if (chr == 'W')
+                    stat++;
+                if (!vis[nxt][stat])
                 {
-                    vis[nxt][0] = true;
-                    que.push({nxt, dist + 1, 0});
+                    vis[nxt][stat] = true;
+                    que.push({nxt, dist + 1, stat});
                 }
             }
         }
