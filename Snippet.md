@@ -42,7 +42,7 @@ Chs. Ver.
 		"body": [
 			"#include <bits/stdc++.h>",
 			"#define endl '\\n'",
-			"// #define int long long",
+			"#define int long long",
 			"",
 			"using namespace std;",
 			"",
@@ -70,7 +70,7 @@ Chs. Ver.
 		"body": [
 			"#include <bits/stdc++.h>",
 			"#define endl '\\n'",
-			"// #define int long long",
+			"#define int long long",
 			"",
 			"using namespace std;",
 			"",
@@ -100,7 +100,7 @@ Chs. Ver.
 ```cpp
 #include <bits/stdc++.h>
 #define endl '\n'
-// #define int long long
+#define int long long
 
 using namespace std;
 
@@ -127,7 +127,7 @@ signed main()
 ```cpp
 #include <bits/stdc++.h>
 #define endl '\n'
-// #define int long long
+#define int long long
 
 using namespace std;
 
