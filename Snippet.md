@@ -1957,12 +1957,12 @@ int do_something(int a, int b)
 $p$ 可取 $131,13331$，模可使用自然溢出。
 
 ```cpp
-typedef unsigned long long ull;
-constexpr ull P = 449, MOD = 436522843;
+typedef long long ll;
+constexpr ll P = 449, MOD = 436522843;
 
-ull get_hash(string &s)
+ll get_hash(string &s)
 {
-    ull res = 0;
+    ll res = 0;
     for (int i = 0; i < s.size(); i++)
         res = (res * P % MOD + s[i]) % MOD;
     return res;
@@ -1976,25 +1976,64 @@ ull get_hash(string &s)
 计算：$O(1)$
 
 ```cpp
-typedef unsigned long long ull;
-constexpr ull P = 449, MOD = 436522843;
-constexpr int MAXN = 1e6 + 10;
-ull p[MAXN], h[MAXN];
-char s[MAXN]; // 下标从1开始，如果要用string注意下标修改
-
-void init()
+struct StrHash
 {
-    p[0] = 1;
-    for (int i = 1; i <= n; i++)
+    int len, base, mod;
+    vector<int> p, h;
+    void init(const string &s, int base, int mod)
     {
-        p[i] = p[i - 1] * P % MOD;
-        h[i] = (h[i - 1] * P % MOD + s[i]) % MOD;
+        len = s.size();
+        this->base = base;
+        this->mod = mod;
+        p.resize(len + 1);
+        h.resize(len + 1);
+        p[0] = 1;
+        for (int i = 1; i <= len; i++)
+            p[i] = p[i - 1] * base % mod;
+        h[0] = s[0] % mod;
+        for (int i = 1; i < len; i++)
+            h[i] = (h[i - 1] * base % mod + s[i]) % mod;
     }
-}
+    int get(int l, int r)
+    {
+        if (l <= 0)
+            return h[r];
+        return (h[r] - h[l - 1] * p[r - l + 1] % mod + mod) % mod;
+    }
+};
+```
 
-ull sub_hash(int l, int r)
+### 2.25.3. 允许 $k$ 次失配的匹配
+
+```cpp
+/* 依赖上文的StrHash结构体 */
+bool check(StrHash &a, StrHash &b, int toler)
 {
-    return (h[r] - h[l - 1] * p[r - l + 1] % MOD + MOD) % MOD;
+    if (a.len < b.len) // make a >= b
+        return check(b, a, toler);
+    int la = a.len, lb = b.len;
+    for (int i = 0; i <= la - lb; i++)
+    {
+        int err = 0, pos = 0;
+        while (err <= toler && pos < lb)
+        {
+            int l = pos, r = lb - 1;
+            while (l < r)
+            {
+                int mid = (l + r) / 2;
+                if (a.get(i + pos, i + mid) == b.get(pos, mid))
+                    l = mid + 1;
+                else
+                    r = mid;
+            }
+            if (a.get(i + pos, i + l) != b.get(pos, l))
+                err++;
+            pos = l + 1;
+        }
+        if (err <= toler)
+            return true;
+    }
+    return false;
 }
 ```
 
@@ -2911,6 +2950,77 @@ int get_sum(int l, int r, int s, int t, int p)
         ans += get_sum(l, r, m + 1, t, p * 2 + 1);
     return ans;
 }
+```
+
+## 3.10 归并树 MergeSortTree
+
+- 查找区间 $[l,r]$ 内的大小范围在 $[a,b]$ 的数的个数（类似条件均可查找）
+- 查找区间 $[l,r]$ 内第 $k$ 大的数
+
+```cpp
+struct MergeSortTree
+{
+    /* ### array index must start from ONE ### */
+    int n;
+    vector<vector<int>> tree;
+
+    // arr: ori arr, [s, t]: cur seg, x: cur node
+    void build(const vector<int> &arr, int s, int t, int x)
+    {
+        if (s == t)
+        {
+            tree[x] = {arr[s]};
+            return;
+        }
+        int m = s + (t - s) / 2;
+        build(arr, s, m, 2 * x);
+        build(arr, m + 1, t, 2 * x + 1);
+        merge(tree[2 * x].begin(), tree[2 * x].end(),
+              tree[2 * x + 1].begin(), tree[2 * x + 1].end(),
+              back_inserter(tree[x]));
+    }
+
+    MergeSortTree(const vector<int> &arr) : n(arr.size())
+    {
+        int sz = 1 << (__lg(n) + bool(__builtin_popcount(n) - 1)); // sz = \lceil \log_{2}{n} \rceil
+        tree.resize(2 * sz);
+        build(arr, 1, n, 1);
+    }
+
+    // [l, r]: query array interval, [mn, mx]: query value interval, [s, t]: cur seg, x: cur node
+    int count(int l, int r, int mn, int mx, int s, int t, int x)
+    {
+        if (l <= s && t <= r)
+            return upper_bound(tree[x].begin(), tree[x].end(), mx) - lower_bound(tree[x].begin(), tree[x].end(), mn);
+        int m = s + (t - s) / 2, ans = 0;
+        if (l <= m)
+            ans += count(l, r, mn, mx, s, m, x * 2);
+        if (r > m)
+            ans += count(l, r, mn, mx, m + 1, t, x * 2 + 1);
+        return ans;
+    }
+
+    // query number of elements in the [l, r] interval that fall within the range [mn, mx]
+    int count(int l, int r, int mn, int mx)
+    {
+        return count(l, r, mn, mx, 1, n, 1);
+    }
+
+    // find the kth smallest number in the [l, r] interval
+    int count(int l, int r, int k)
+    {
+        int pl = 1, pr = n;
+        while (pl < pr)
+        {
+            int mid = (pl + pr) / 2;
+            if (count(l, r, INT32_MIN, tree[1][mid]) < k)
+                pl = mid + 1;
+            else
+                pr = mid;
+        }
+        return tree[1][pl];
+    }
+};
 ```
 
 # 4. 数论
