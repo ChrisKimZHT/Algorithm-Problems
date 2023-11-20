@@ -2687,272 +2687,538 @@ int query(int l, int r)
 
 ## 3.9 线段树 Segment Tree
 
-### 3.9.1. 维护区间和，包含 + 运算
+### 3.9.1. 区间和；区间加
 
 ```cpp
-// s, t  - 建树的区间起点和终点
-// p     - 当前的节点编号
-// sum[] - 线段树维护区间和
-// a[]   - 原数组 (1 ~ n)
-// 如果要对长度为 n 的数列建立线段树，则调用 build(1, n, 1);
-void build(int s, int t, int p)
+/* 线段树: 维护区间和, 支持区间加, 使用懒惰标记 */
+/* 下标从1开始，注意空间大小 */
+namespace segtree
 {
-    if (s == t)
-    {
-        sum[p] = a[s];
-        return;
-    }
-    int m = s + (t - s) / 2;
-    build(s, m, p * 2);
-    build(m + 1, t, p * 2 + 1);
-    sum[p] = sum[p * 2] + sum[p * 2 + 1];
-}
+    constexpr int MAXN = 1e6;
+    int arr[MAXN], sum[MAXN]; // 原数组, 线段树区间和
+    int addv[MAXN];           // 加法实际值（同时做加法标记）
 
-// l, r      - 要更新的区间的起点和终点
-// c         - 更新值 +c
-// s, t      - 当前正在考察的区间的起点和终点
-// p         - 当前的节点编号
-// sum[]     - 线段树维护区间和
-// add_val[] - 加法修改标记
-// 如果要对长度为 n 的数列的 [a, b] 区间 +c，则调用 add(a, b, c, 1, n, 1);
-void add(int l, int r, int c, int s, int t, int p)
-{
-    if (l <= s && t <= r)
+    void push_down(int s, int t, int p)
     {
-        sum[p] += (t - s + 1) * c;
-        add_val[p] += c;
-        return;
+        if (addv[p] && s != t)
+        {
+            int m = (s + t) / 2;
+            sum[p * 2] += addv[p] * (m - s + 1);
+            sum[p * 2 + 1] += addv[p] * (t - m);
+            addv[p * 2] += addv[p];
+            addv[p * 2 + 1] += addv[p];
+            addv[p] = 0;
+        }
     }
-    int m = s + (t - s) / 2;
-    if (add_val[p] && s != t)
-    {
-        sum[p * 2] += add_val[p] * (m - s + 1);
-        sum[p * 2 + 1] += add_val[p] * (t - m);
-        add_val[p * 2] += add_val[p];
-        add_val[p * 2 + 1] += add_val[p];
-        add_val[p] = 0;
-    }
-    if (l <= m)
-        add(l, r, c, s, m, p * 2);
-    if (r > m)
-        add(l, r, c, m + 1, t, p * 2 + 1);
-    sum[p] = sum[p * 2] + sum[p * 2 + 1];
-}
 
-// l, r      - 要查询的区间的起点和终点
-// s, t      - 当前正在考察的区间的起点和终点
-// p         - 当前的节点编号
-// sum[]     - 线段树维护区间和
-// add_val[] - 加法修改标记
-// 如果要对长度为 n 的数列查询 [a, b] 区间的和，则调用 get_sum(a, b, 1, n, 1);
-int get_sum(int l, int r, int s, int t, int p)
-{
-    if (l <= s && t <= r)
-        return sum[p];
-    int m = s + (t - s) / 2;
-    if (add_val[p])
+    void push_up(int p)
     {
-        sum[p * 2] += add_val[p] * (m - s + 1);
-        sum[p * 2 + 1] += add_val[p] * (t - m);
-        add_val[p * 2] += add_val[p];
-        add_val[p * 2 + 1] += add_val[p];
-        add_val[p] = 0;
+        sum[p] = sum[p * 2] + sum[p * 2 + 1];
     }
-    int ans = 0;
-    if (l <= m)
-        ans += get_sum(l, r, s, m, p * 2);
-    if (r > m)
-        ans += get_sum(l, r, m + 1, t, p * 2 + 1);
-    return ans;
+
+    void build(int s, int t, int p)
+    {
+        if (s == t)
+        {
+            sum[p] = arr[s];
+            return;
+        }
+        int m = (s + t) / 2;
+        build(s, m, 2 * p);
+        build(m + 1, t, 2 * p + 1);
+        push_up(p);
+    }
+
+    void add(int l, int r, int c, int s, int t, int p) // [l, r] += c
+    {
+        if (l <= s && t <= r)
+        {
+            sum[p] += (t - s + 1) * c;
+            addv[p] += c;
+            return;
+        }
+        push_down(s, t, p);
+        int m = (s + t) / 2;
+        if (l <= m)
+            add(l, r, c, s, m, p * 2);
+        if (r > m)
+            add(l, r, c, m + 1, t, p * 2 + 1);
+        push_up(p);
+    }
+
+    int query(int l, int r, int s, int t, int p) // [l, r] ?sum
+    {
+        if (l <= s && t <= r)
+            return sum[p];
+        push_down(s, t, p);
+        int m = (s + t) / 2, sum = 0;
+        if (l <= m)
+            sum += query(l, r, s, m, p * 2);
+        if (r > m)
+            sum += query(l, r, m + 1, t, p * 2 + 1);
+        return sum;
+    }
+};
+```
+
+### 3.9.2. 区间和；区间修改
+
+```cpp
+/* 线段树: 维护区间和, 支持区间修改, 使用懒惰标记 */
+/* 下标从1开始，注意空间大小 */
+namespace segtree
+{
+    constexpr int MAXN = 1e6 + 10;
+    int arr[MAXN], sum[MAXN]; // 原数组, 线段树区间和
+    int updv[MAXN];           // 修改值
+    bool updt[MAXN];          // 修改标记
+
+    void push_down(int s, int t, int p)
+    {
+        if (updt[p] && s != t)
+        {
+            int m = (s + t) / 2;
+            sum[p * 2] = updv[p] * (m - s + 1);
+            sum[p * 2 + 1] = updv[p] * (t - m);
+            updv[p * 2] = updv[p];
+            updv[p * 2 + 1] = updv[p];
+            updt[p * 2] = 1;
+            updt[p * 2 + 1] = 1;
+            updt[p] = 0;
+        }
+    }
+
+    void push_up(int p)
+    {
+        sum[p] = sum[p * 2] + sum[p * 2 + 1];
+    }
+
+    void build(int s, int t, int p)
+    {
+        if (s == t)
+        {
+            sum[p] = arr[s];
+            return;
+        }
+        int m = (s + t) / 2;
+        build(s, m, 2 * p);
+        build(m + 1, t, 2 * p + 1);
+        push_up(p);
+    }
+
+    void update(int l, int r, int c, int s, int t, int p) // [l, r] = c
+    {
+        if (l <= s && t <= r)
+        {
+            sum[p] = (t - s + 1) * c;
+            updt[p] = 1;
+            updv[p] = c;
+            return;
+        }
+        push_down(s, t, p);
+        int m = (s + t) / 2;
+        if (l <= m)
+            update(l, r, c, s, m, p * 2);
+        if (r > m)
+            update(l, r, c, m + 1, t, p * 2 + 1);
+        push_up(p);
+    }
+
+    int query(int l, int r, int s, int t, int p) // [l, r] ?sum
+    {
+        if (l <= s && t <= r)
+            return sum[p];
+        push_down(s, t, p);
+        int m = (s + t) / 2, ans = 0;
+        if (l <= m)
+            ans += query(l, r, s, m, p * 2);
+        if (r > m)
+            ans += query(l, r, m + 1, t, p * 2 + 1);
+        return ans;
+    }
+};
+```
+
+### 3.9.3. 区间和；区间加、区间乘
+
+```cpp
+/* 线段树: 维护区间和, 支持区间加与乘, 使用懒惰标记 */
+/* 下标从1开始，注意空间大小 */
+namespace segtree
+{
+    constexpr int MAXN = 1e6 + 10;
+    int arr[MAXN], sum[MAXN];   // 原数组, 线段树区间和
+    int addv[MAXN], mulv[MAXN]; // 加法值, 乘法值（同时做标记）
+
+    void push_down(int s, int t, int p)
+    {
+        int m = (s + t) / 2;
+        if (mulv[p] != 1 && s != t)
+        {
+            sum[p * 2] *= mulv[p];
+            sum[p * 2 + 1] *= mulv[p];
+            addv[p * 2] *= mulv[p];
+            addv[p * 2 + 1] *= mulv[p];
+            mulv[p * 2] *= mulv[p];
+            mulv[p * 2 + 1] *= mulv[p];
+            mulv[p] = 1;
+        }
+        if (addv[p] != 0 && s != t)
+        {
+            sum[p * 2] += addv[p] * (m - s + 1);
+            sum[p * 2 + 1] += addv[p] * (t - m);
+            addv[p * 2] += addv[p];
+            addv[p * 2 + 1] += addv[p];
+            addv[p] = 0;
+        }
+    }
+
+    void push_up(int p)
+    {
+        sum[p] = sum[p * 2] + sum[p * 2 + 1];
+    }
+
+    void build(int s, int t, int p)
+    {
+        mulv[p] = 1;
+        if (s == t)
+        {
+            sum[p] = arr[s];
+            return;
+        }
+        int m = (s + t) / 2;
+        build(s, m, 2 * p);
+        build(m + 1, t, 2 * p + 1);
+        push_up(p);
+    }
+
+    void add(int l, int r, int c, int s, int t, int p) // [l, r] += c
+    {
+        if (l <= s && t <= r)
+        {
+            sum[p] += (t - s + 1) * c;
+            addv[p] += c;
+            return;
+        }
+        push_down(s, t, p);
+        int m = (s + t) / 2;
+        if (l <= m)
+            add(l, r, c, s, m, p * 2);
+        if (r > m)
+            add(l, r, c, m + 1, t, p * 2 + 1);
+        push_up(p);
+    }
+
+    void mul(int l, int r, int c, int s, int t, int p) // [l, r] *= c
+    {
+        if (l <= s && t <= r)
+        {
+            sum[p] *= c;
+            addv[p] *= c;
+            mulv[p] *= c;
+            return;
+        }
+        push_down(s, t, p);
+        int m = (s + t) / 2;
+        if (l <= m)
+            mul(l, r, c, s, m, p * 2);
+        if (r > m)
+            mul(l, r, c, m + 1, t, p * 2 + 1);
+        push_up(p);
+    }
+
+    int query(int l, int r, int s, int t, int p) // [l, r] ?sum
+    {
+        if (l <= s && t <= r)
+            return sum[p];
+        push_down(s, t, p);
+        int m = (s + t) / 2;
+        int ans = 0;
+        if (l <= m)
+            ans += query(l, r, s, m, p * 2);
+        if (r > m)
+            ans += query(l, r, m + 1, t, p * 2 + 1);
+        return ans;
+    }
+};
+```
+
+### 3.9.4. 权值线段树
+
+第 $k$ 小
+
+```cpp
+/* 权值线段树 */
+namespace segtree
+{
+    constexpr int MAXN = 1e6;
+    int sum[MAXN]; // 数的个数
+
+    void build(int s, int t, int p)
+    {
+        if (s == t)
+        {
+            sum[p] = 0;
+            return;
+        }
+        int m = (s + t) / 2;
+        build(s, m, 2 * p);
+        build(m + 1, t, 2 * p + 1);
+    }
+
+    void update(int x, int s, int t, int p)
+    {
+        sum[p]++;
+        if (s == t)
+            return;
+        int m = (s + t) / 2;
+        if (x <= m)
+            update(x, s, m, p * 2);
+        else
+            update(x, m + 1, t, p * 2 + 1);
+    }
+
+    int query(int k, int s, int t, int p)
+    {
+        if (s == t)
+            return s;
+        int m = (s + t) / 2;
+        if (sum[p * 2] >= k)
+            return query(k, s, m, p * 2);
+        else
+            return query(k - sum[p * 2], m + 1, t, p * 2 + 1);
+    }
+};
+```
+
+## 3.10 可持久化线段树 Persistent Segment Tree
+
+### 3.10.1 单点修改
+
+```cpp
+namespace pst
+{
+    /* ### array index must start from ONE ### */
+    constexpr int MAXN = 1e6;
+    int n;
+    int root[MAXN];
+    int val[(MAXN << 5) + 10], lson[(MAXN << 5) + 10], rson[(MAXN << 5) + 10], cur_idx = 0;
+
+    int build(const vector<int> &arr, int s, int t)
+    {
+        int now = ++cur_idx;
+        if (s == t)
+        {
+            val[now] = arr[s];
+            return now;
+        }
+        int m = (s + t) / 2;
+        lson[now] = build(arr, s, m);
+        rson[now] = build(arr, m + 1, t);
+        return now;
+    }
+
+    int clone_node(int orig)
+    {
+        ++cur_idx;
+        val[cur_idx] = val[orig];
+        lson[cur_idx] = lson[orig];
+        rson[cur_idx] = rson[orig];
+        return cur_idx;
+    }
+
+    int update(int x, int c, int s, int t, int p)
+    {
+        int now = clone_node(p);
+        if (s == t)
+        {
+            val[now] = c;
+            return now;
+        }
+        int m = (s + t) / 2;
+        if (x <= m)
+            lson[now] = update(x, c, s, m, lson[now]);
+        else
+            rson[now] = update(x, c, m + 1, t, rson[now]);
+        return now;
+    }
+
+    int query(int x, int s, int t, int p)
+    {
+        if (s == t)
+            return val[p];
+        int m = (s + t) / 2;
+        if (x <= m)
+            return query(x, s, m, lson[p]);
+        else
+            return query(x, m + 1, t, rson[p]);
+    }
+};
+```
+
+### 3.10.2 区间修改
+
+```cpp
+namespace pst
+{
+    /* ### array index must start from ONE ### */
+    constexpr int MAXN = 1e6;
+    int n;
+    signed root[MAXN];
+    int cur_idx = 0;
+    int val[(MAXN << 5) + 10], mark[(MAXN << 5) + 10];
+    signed lson[(MAXN << 5) + 10], rson[(MAXN << 5) + 10];
+
+    int build(const vector<int> &arr, int s, int t)
+    {
+        int now = ++cur_idx;
+        if (s == t)
+        {
+            val[now] = arr[s];
+            return now;
+        }
+        int m = (s + t) / 2;
+        lson[now] = build(arr, s, m);
+        rson[now] = build(arr, m + 1, t);
+        val[now] = val[lson[now]] + val[rson[now]];
+        return now;
+    }
+
+    int clone_node(int orig)
+    {
+        ++cur_idx;
+        val[cur_idx] = val[orig];
+        mark[cur_idx] = mark[orig];
+        lson[cur_idx] = lson[orig];
+        rson[cur_idx] = rson[orig];
+        return cur_idx;
+    }
+
+    int update(int l, int r, int c, int s, int t, int p)
+    {
+        int now = clone_node(p);
+        val[now] += (min(r, t) - max(l, s) + 1) * c;
+        if (l <= s && t <= r)
+        {
+            mark[now] += c;
+            return now;
+        }
+        int m = (s + t) / 2;
+        if (l <= m)
+            lson[now] = update(l, r, c, s, m, lson[now]);
+        if (r > m)
+            rson[now] = update(l, r, c, m + 1, t, rson[now]);
+        return now;
+    }
+
+    int query(int l, int r, int s, int t, int p, int mk = 0)
+    {
+        if (l <= s && t <= r)
+            return val[p] + mk * (t - s + 1);
+        int m = (s + t) / 2, ans = 0;
+        if (l <= m)
+            ans += query(l, r, s, m, lson[p], mk + mark[p]);
+        if (r > m)
+            ans += query(l, r, m + 1, t, rson[p], mk + mark[p]);
+        return ans;
+    }
+};
+```
+
+### 3.10.3 可持久化权值线段树（主席树）
+
+区间第 $k$ 小
+
+```cpp
+namespace hjt
+{
+    /* ### array index must start from ONE ### */
+
+    constexpr int MAXN = 1e6;
+    int n;
+    int sum[(MAXN << 5) + 10], lson[(MAXN << 5) + 10], rson[(MAXN << 5) + 10], cur_idx = 0;
+    int root[MAXN], cur_ver = 0;
+
+    int build(int s, int t)
+    {
+        int now = ++cur_idx;
+        if (s == t)
+        {
+            sum[now] = 0;
+            return now;
+        }
+        int m = (s + t) / 2;
+        lson[now] = build(s, m);
+        rson[now] = build(m + 1, t);
+        return now;
+    }
+
+    int clone_node(int orig)
+    {
+        ++cur_idx;
+        sum[cur_idx] = sum[orig] + 1;
+        lson[cur_idx] = lson[orig];
+        rson[cur_idx] = rson[orig];
+        return cur_idx;
+    }
+
+    int update(int x, int s, int t, int p)
+    {
+        int now = clone_node(p);
+        if (s == t)
+            return now;
+        int m = (s + t) / 2;
+        if (x <= m)
+            lson[now] = update(x, s, m, lson[now]);
+        else
+            rson[now] = update(x, m + 1, t, rson[now]);
+        return now;
+    }
+
+    int query(int x, int l, int r, int s, int t)
+    {
+        if (s == t)
+            return s;
+        int delt = sum[lson[r]] - sum[lson[l]];
+        int m = (s + t) / 2;
+        if (x <= delt)
+            return query(x, lson[l], lson[r], s, m);
+        else
+            return query(x - delt, rson[l], rson[r], m + 1, t);
+    }
+};
+```
+
+用法示例：
+
+```cpp
+void solve()
+{
+    int n, m;
+    cin >> n >> m;
+    vector<int> a(n + 10);
+    for (int i = 1; i <= n; i++)
+        cin >> a[i];
+    auto b = a;
+    sort(b.begin() + 1, b.begin() + 1 + n);
+    int uni = unique(b.begin() + 1, b.begin() + 1 + n) - b.begin() - 1;
+    hjt::root[0] = hjt::build(1, uni);
+    for (int i = 1; i <= n; i++)
+    {
+        int t = lower_bound(b.begin() + 1, b.begin() + 1 + uni, a[i]) - b.begin();
+        hjt::root[i] = hjt::update(t, 1, m, hjt::root[i - 1]);
+    }
+    for (int i = 1; i <= m; i++)
+    {
+        int l, r, k;
+        cin >> l >> r >> k;
+        int t = hjt::query(k, hjt::root[l - 1], hjt::root[r], 1, m);
+        cout << b[t] << endl;
+    }
 }
 ```
 
-### 3.9.2. 维护区间和，包含 + x 运算
-
-```cpp
-// s, t      - 建树的区间起点和终点
-// p         - 当前的节点编号
-// a[]       - 原数组 (1 ~ n)
-// sum[]     - 线段树维护区间和
-// add_val[] - 加法修改标记
-// mul_val[] - 乘法修改标记
-// 如果要对长度为 n 的数列建立线段树，则调用 build(1, n, 1);
-void build(int s, int t, int p)
-{
-    mul_val[p] = 1;
-    if (s == t)
-    {
-        sum[p] = a[s];
-        return;
-    }
-    int m = s + (t - s) / 2;
-    build(s, m, 2 * p);
-    build(m + 1, t, 2 * p + 1);
-    sum[p] = sum[2 * p] + sum[2 * p + 1];
-}
-
-// p         - 当前的节点编号
-// s, t      - 当前正在考察的区间的起点和终点
-// sum[]     - 线段树维护区间和
-// add_val[] - 加法修改标记
-// mul_val[] - 乘法修改标记
-void push_down(int p, int s, int t)
-{
-    int m = s + (t - s) / 2;
-    if (mul_val[p] != 1 && s != t)
-    {
-        sum[p * 2] *= mul_val[p];
-        sum[p * 2 + 1] *= mul_val[p];
-        add_val[p * 2] *= mul_val[p];
-        add_val[p * 2 + 1] *= mul_val[p];
-        mul_val[p * 2] *= mul_val[p];
-        mul_val[p * 2 + 1] *= mul_val[p];
-        mul_val[p] = 1;
-    }
-    if (add_val[p] && s != t)
-    {
-        sum[p * 2] += add_val[p] * (m - s + 1);
-        sum[p * 2 + 1] += add_val[p] * (t - m);
-        add_val[p * 2] += add_val[p];
-        add_val[p * 2 + 1] += add_val[p];
-        add_val[p] = 0;
-    }
-}
-
-// l, r      - 要更新的区间的起点和终点
-// c         - 更新值 +c
-// s, t      - 当前正在考察的区间的起点和终点
-// p         - 当前的节点编号
-// 如果要对长度为 n 的数列的 [a, b] 区间 +c，则调用 add(a, b, c, 1, n, 1);
-void add(int l, int r, int c, int s, int t, int p)
-{
-    if (l <= s && t <= r)
-    {
-        sum[p] += (t - s + 1) * c;
-        add_val[p] += c;
-        return;
-    }
-    push_down(p, s, t);
-    int m = s + (t - s) / 2;
-    if (l <= m)
-        add(l, r, c, s, m, p * 2);
-    if (r > m)
-        add(l, r, c, m + 1, t, p * 2 + 1);
-    sum[p] = sum[p * 2] + sum[p * 2 + 1];
-}
-
-// l, r      - 要更新的区间的起点和终点
-// c         - 更新值 *c
-// s, t      - 当前正在考察的区间的起点和终点
-// p         - 当前的节点编号
-// 如果要对长度为 n 的数列的 [a, b] 区间 *c，则调用 mul(a, b, c, 1, n, 1);
-void mul(int l, int r, int c, int s, int t, int p)
-{
-    if (l <= s && t <= r)
-    {
-        sum[p] *= c ;
-        add_val[p] *= c;
-        mul_val[p] *= c;
-        return;
-    }
-    push_down(p, s, t);
-    int m = s + (t - s) / 2;
-    if (l <= m)
-        mul(l, r, c, s, m, p * 2);
-    if (r > m)
-        mul(l, r, c, m + 1, t, p * 2 + 1);
-    sum[p] = sum[p * 2] + sum[p * 2 + 1];
-}
-
-// l, r - 要查询的区间的起点和终点
-// s, t - 当前正在考察的区间的起点和终点
-// p    - 当前的节点编号
-// 如果要对长度为 n 的数列查询 [a, b] 区间的和，则调用 get_sum(a, b, 1, n, 1);
-int get_sum(int l, int r, int s, int t, int p)
-{
-    if (l <= s && t <= r)
-        return sum[p];
-    push_down(p, s, t);
-    int m = s + (t - s) / 2;
-    int ans = 0;
-    if (l <= m)
-        ans += get_sum(l, r, s, m, p * 2);
-    if (r > m)
-        ans += get_sum(l, r, m + 1, t, p * 2 + 1);
-    return ans;
-}
-```
-
-### 3.9.3. 维护区间和，包含修改运算
-
-```cpp
-// l, r      - 要更新的区间的起点和终点
-// c         - 更新值 +c
-// s, t      - 当前正在考察的区间的起点和终点
-// p         - 当前的节点编号
-// sum[]     - 线段树维护区间和
-// upd_tag[] - 修改标记
-// upd_val[] - 修改值
-// 如果要将长度为 n 的数列的 [a, b] 区间改为 c，则调用 update(a, b, c, 1, n, 1);
-void update(int l, int r, int c, int s, int t, int p)
-{
-    if (l <= s && t <= r)
-    {
-        sum[p] = (t - s + 1) * c;
-        upd_tag[p] = 1;
-        upd_val[p] = c;
-        return;
-    }
-    int m = s + (t - s) / 2;
-    if (upd_tag[p] && s != t)
-    {
-        sum[p * 2] = upd_val[p] * (m - s + 1);
-        sum[p * 2 + 1] = upd_val[p] * (t - m);
-        upd_val[p * 2] = upd_val[p];
-        upd_val[p * 2 + 1] = upd_val[p];
-        upd_tag[p * 2] = 1;
-        upd_tag[p * 2 + 1] = 1;
-        upd_tag[p] = 0;
-    }
-    if (l <= m)
-        update(l, r, c, s, m, p * 2);
-    if (r > m)
-        update(l, r, c, m + 1, t, p * 2 + 1);
-    sum[p] = sum[p * 2] + sum[p * 2 + 1];
-}
-
-// l, r      - 要查询的区间的起点和终点
-// s, t      - 当前正在考察的区间的起点和终点
-// p         - 当前的节点编号
-// sum[]     - 线段树维护区间和
-// upd_tag[] - 修改标记
-// upd_val[] - 修改值
-// 如果要对长度为 n 的数列查询 [a, b] 区间的和，则调用 get_sum(a, b, 1, n, 1);
-int get_sum(int l, int r, int s, int t, int p)
-{
-    if (l <= s && t <= r)
-        return sum[p];
-    int m = s + (t - s) / 2;
-    if (upd_tag[p])
-    {
-        sum[p * 2] = upd_val[p] * (m - s + 1);
-        sum[p * 2 + 1] = upd_val[p] * (t - m);
-        upd_val[p * 2] = upd_val[p];
-        upd_val[p * 2 + 1] = upd_val[p];
-        upd_tag[p * 2] = 1;
-        upd_tag[p * 2 + 1] = 1;
-        upd_tag[p] = 0;
-    }
-    int ans = 0;
-    if (l <= m)
-        ans += get_sum(l, r, s, m, p * 2);
-    if (r > m)
-        ans += get_sum(l, r, m + 1, t, p * 2 + 1);
-    return ans;
-}
-```
-
-## 3.10 归并树 MergeSortTree
+## 3.11 归并树 MergeSortTree
 
 - 查找区间 $[l,r]$ 内的大小范围在 $[a,b]$ 的数的个数（类似条件均可查找）
 - 查找区间 $[l,r]$ 内第 $k$ 大的数
