@@ -2117,6 +2117,40 @@ bool topo_sort(int n) // n - vertice cnt
 }
 ```
 
+## 2.28. 莫队 Mo's Algorithm
+
+若存在一个长度为 $n$ 的序列，对于序列上的 $m$ 个区间询问问题，如果一个区间答案能够在 $O(1)$ 转移到相邻区间的答案，那么可以通过莫队算法在 $O(n\sqrt m)$ 的复杂度求出所有询问。
+
+```cpp
+int cur_ans = 0; // current answer
+int block;       // block size
+
+void add(int pos) { /* update current answer */ }
+void del(int pos) { /* update current answer */ }
+
+bool cmp(Query a, Query b)
+{
+    if (a.l / block != b.l / block)
+        return a.l < b.l;
+    return (a.l / block) % 2 ? a.r < b.r : a.r > b.r;
+}
+
+void solve()
+{
+    block = sqrt(m);
+    sort(query.begin(), query.end(), cmp);
+    int l = 1, r = 0; // initial
+    for (int i = 0; i < m; i++)
+    {
+        while (l > query[i].l) add(--l);
+        while (r < query[i].r) add(++r);
+        while (l < query[i].l) del(l++);
+        while (r > query[i].r) del(r--);   
+        ans[query[i].idx] = cur_ans;
+    }
+}
+```
+
 # 3. 数据结构
 
 ## 3.1. 单调队列 Monotonic Queue
