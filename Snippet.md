@@ -3577,3 +3577,78 @@ $$
 - 任一大于 $2$ 的偶数，都可表示成两个素数之和。
 - 大于 $5$ 的奇数都可以表示成三个素数之和。
 - 任意一个大于 $4$ 的偶数都可以拆成两个奇素数之和。
+
+## 4.10 范德蒙德卷积 Vandermonde Convolution
+
+范德蒙德卷积公式：
+$$
+\sum_{i=0}^{k}{n\choose i}{m\choose k-i}={n+m\choose k}
+$$
+推论 $1$：
+$$
+\sum_{i=-r}^{s}{n\choose r+i}{m\choose s-i}={n+m\choose r+s}
+$$
+推论 $2$：
+$$
+\sum_{i=1}^{n}{n\choose i}{n\choose i-1}={2n\choose n-1}
+$$
+推论 $3$：
+$$
+\sum_{i=0}^{n}{n\choose i}^2={2n\choose n}
+$$
+推论 $4$：
+$$
+\sum_{i=0}^{m}{n\choose i}{m\choose i}={n+m\choose m}
+$$
+
+## 4.11 二项式定理以及推论
+
+二项式定理：
+$$
+(a+b)^n=\sum_{i=0}^{n}{n\choose i}a^{n-i}b^{i}
+$$
+多项式推广：
+$$
+(x_1+x_2+\cdots+x_t)^n=\sum_{满足n_1+\cdots+n_t=n的非负整数解}{n\choose n_1,n_2,\cdots,n_t}x_1^{n_1}x_2^{n_2}\cdots x_t^{n_t}
+$$
+组合数性质、二项式推论：
+$$
+{n\choose m}={n\choose n-m}
+$$
+
+$$
+{n\choose k}=\frac{n}{k}{n-1\choose k-1}
+$$
+
+$$
+{n\choose m}={n-1\choose m}+{n-1\choose m-1}
+$$
+
+$$
+{n\choose 0}+{n\choose 1}+\cdots+{n\choose n}=\sum_{i=1}^n{n\choose i}=2^n
+$$
+
+$$
+\sum_{i=0}^n(-1)^i{n\choose i}=[n=0]
+$$
+
+$$
+\sum_{i=0}^{m}{n\choose i}{m\choose m-i}={m+n\choose m}\;(n\geq m)
+$$
+
+$$
+\sum_{i=0}^n i^2{n\choose i}=n(n+1)2^{n-2}
+$$
+
+$$
+\sum_{l=0}^{n}{l\choose k}={n+1\choose k+1}
+$$
+
+$$
+{n\choose r}{r\choose k}={n\choose k}{n-k\choose r-k}
+$$
+
+$$
+\sum_{i=0}^n{n-i\choose i}=\text{Fibonacci}_{n+1}
+$$
+
