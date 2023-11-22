@@ -1,101 +1,10 @@
-数据结构与算法模板
+# 数据结构与算法模板
 
-# 0. 要点
+Made by ChrisKim: https://github.com/ChrisKimZHT
 
-Eng. Ver.
+[TOC]
 
-```cpp
-/* stuff you should look for
- * int overflow, array bounds
- * special cases (n=1?)
- * do something instead of nothing and stay organized
- * WRITE STUFF DOWN
- * DON'T GET STUCK ON ONE APPROACH
- */
-```
-
-Chs. Ver.
-
-```cpp
-/* 你应该注意的东西
- * int溢出，数组边界
- * 特殊情况(n=1?)
- * 做一些事情而不是什么也不做，保证效率
- * 把东西写在纸上
- * 不要在一个地方死磕
- */
-```
-
-# 1. VSC Snippet
-
-## 1.1. Json 源文件
-
-```json
-{
-	// Place your snippets for cpp here. Each snippet is defined under a snippet name and has a prefix, body and 
-	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
-	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
-	// same ids are connected.
-	// Example:
-	"Codeforces Multiple": {
-		"prefix": "!cf",
-		"body": [
-			"#include <bits/stdc++.h>",
-			"#define endl '\\n'",
-			"#define int long long",
-			"",
-			"using namespace std;",
-			"",
-			"void solve()",
-			"{",
-			"\t$0",
-			"}",
-			"",
-			"signed main()",
-			"{",
-			"\tios::sync_with_stdio(false);",
-			"\tcin.tie(0);",
-			"\tcout.tie(0);",
-			"\tint t = 1;",
-			"\tcin >> t;",
-			"\twhile (t--)",
-			"\t\tsolve();",
-			"\treturn 0;",
-			"}"
-		],
-		"description": "Codeforces template (multiple test cases)"
-	},
-	"Codeforces Single": {
-		"prefix": "!scf",
-		"body": [
-			"#include <bits/stdc++.h>",
-			"#define endl '\\n'",
-			"#define int long long",
-			"",
-			"using namespace std;",
-			"",
-			"void solve()",
-			"{",
-			"\t$0",
-			"}",
-			"",
-			"signed main()",
-			"{",
-			"\tios::sync_with_stdio(false);",
-			"\tcin.tie(0);",
-			"\tcout.tie(0);",
-			"\tsolve();",
-			"\treturn 0;",
-			"}"
-		],
-		"description": "Codeforces template (single test case)"
-	}
-}
-```
-
-## 1.2. 模板本体
-
-### 1.2.1. Codeforces 多测
+# 1 基础模板
 
 ```cpp
 #include <bits/stdc++.h>
@@ -106,7 +15,7 @@ using namespace std;
 
 void solve()
 {
-    
+    // 解题
 }
 
 signed main()
@@ -115,40 +24,16 @@ signed main()
     cin.tie(0);
     cout.tie(0);
     int t = 1;
-    cin >> t;
+    cin >> t; // 单测则注释
     while (t--)
         solve();
     return 0;
 }
 ```
 
-### 1.2.2. Codeforces 单测
+# 2 算法 Algorithm
 
-```cpp
-#include <bits/stdc++.h>
-#define endl '\n'
-#define int long long
-
-using namespace std;
-
-void solve()
-{
-    
-}
-
-signed main()
-{
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-    solve();
-    return 0;
-}
-```
-
-# 2. 算法
-
-## 2.1. 埃式筛 埃拉托斯特尼筛法 Eratosthenes
+## 2.1 埃式筛 埃拉托斯特尼筛法 Eratosthenes
 
 时间复杂度：$O(n\log\log n)$
 
@@ -167,7 +52,7 @@ void init_prime()
 }
 ```
 
-## 2.2. 欧拉筛 线性筛 Euler
+## 2.2 欧拉筛 线性筛 Euler
 
 时间复杂度：$O(n)$
 
@@ -194,11 +79,11 @@ void init_prime()
 }
 ```
 
-## 2.3. 二分查找 Binary Search
+## 2.3 二分查找 Binary Search
 
 时间复杂度：$O(\log n)$
 
-### 2.3.1. $\geq x$
+### 2.3.1 $\geq x$
 
 ```cpp
 // a[ ]为储存数据的有序递增数组
@@ -214,7 +99,7 @@ while (l < r)
 }
 ```
 
-### 2.3.2. $\leq x$
+### 2.3.2 $\leq x$
 
 ```cpp
 // a[ ]为储存数据的有序递增数组
@@ -230,7 +115,7 @@ while (l < r)
 }
 ```
 
-### 2.3.3. 实数
+### 2.3.3 实数
 
 ```cpp
 // check(int x): 判断x是否满足条件
@@ -250,7 +135,7 @@ while (r - l > eps)
 }
 ```
 
-## 2.4. 三分查找
+## 2.4 三分查找
 
 时间复杂度：$O(\log n)$
 
@@ -272,7 +157,7 @@ while(r - l > eps)
 }
 ```
 
-## 2.5. 深度优先搜索 DFS
+## 2.5 深度优先搜索 DFS
 
 ```cpp
 type dfs(type x, ... ) // 可以存在多个变量
@@ -298,7 +183,7 @@ type dfs(type x, ... ) // 可以存在多个变量
 }
 ```
 
-## 2.6. 广度优先搜索 BFS
+## 2.6 广度优先搜索 BFS
 
 ```cpp
 bool vis[MAXN]; // 标记是否搜索过，有时也可直接用depth来判断
@@ -334,7 +219,7 @@ type bfs(type start)
 }
 ```
 
-## 2.7. 辗转相除法 欧几里得算法 Euclidean algorithm
+## 2.7 辗转相除法 欧几里得算法 Euclidean algorithm
 
 时间复杂度：$O(\log(a+b))$
 
@@ -347,11 +232,11 @@ int gcd(int a, int b)
 }
 ```
 
-## 2.8. 快速幂 fast power
+## 2.8 快速幂 Exponentiation by squaring
 
 时间复杂度：$O(\log n)$
 
-### 2.8.1. 不取模
+### 2.8.1 不取模
 
 ```cpp
 ll fast_pow(ll a, ll b)
@@ -368,7 +253,7 @@ ll fast_pow(ll a, ll b)
 }
 ```
 
-### 2.8.2. 取模
+### 2.8.2 取模
 
 ```cpp
 const ll MOD = 20220128;
@@ -387,11 +272,11 @@ ll fast_pow(ll a, ll b)
 }
 ```
 
-## 2.9. KMP 算法 The Knuth-Morris-Pratt Algorithm
+## 2.9 KMP 算法 The Knuth-Morris-Pratt Algorithm
 
 时间复杂度：$O(n+m)$
 
-### 2.9.1. 类封装
+### 2.9.1 类封装
 
 使用时先构造 `KMP`，传入参数为**模式串（Pattern）**.
 
@@ -453,7 +338,7 @@ public:
 };
 ```
 
-### 2.9.1. 旧模板
+### 2.9.1 旧模板
 
 **计算部分匹配表**
 
@@ -544,11 +429,11 @@ void kmp(void)
 }
 ```
 
-## 2.10. Dijkstra 算法
+## 2.10 Dijkstra 算法
 
 解决赋权图的单源最短路径问题，**不能解决负边**。
 
-### 2.10.1. 朴素（适合稠密图）
+### 2.10.1 朴素（适合稠密图）
 
 时间复杂度：$O(|V|^2)$
 
@@ -576,7 +461,7 @@ void dijkstra()
 }
 ```
 
-### 2.10.2. 堆优化（适合稀疏图）
+### 2.10.2 堆优化（适合稀疏图）
 
 时间复杂度：$O((\left|E\right|+\left|V\right|)\log\left|V\right|)$ 
 
@@ -618,7 +503,7 @@ void dijkstra()
 }
 ```
 
-## 2.11. Floyd-Warshall 算法
+## 2.11 Floyd-Warshall 算法
 
 解决赋权图的多源最短路径问题，能解决负边，不能解决负环。
 
@@ -646,13 +531,13 @@ void floyd(void)
 }
 ```
 
-## 2.12. 最短路径快速算法 SPFA
+## 2.12 最短路径快速算法 SPFA
 
 平均时间复杂度：$O(\left|E\right|)$
 
 最差时间复杂度：$O(\left|V\right|\cdot\left|E\right|)$
 
-### 2.12.1. 最短路
+### 2.12.1 最短路
 
 ```cpp
 const int MAXN = 1e5 + 10, INF = 0x3f3f3f3f; // INF代表无穷大
@@ -689,7 +574,7 @@ void spfa(int src)
 }
 ```
 
-### 2.12.2. 判负权回路
+### 2.12.2 判负权回路
 
 ```cpp
 const int MAXN = 1e5 + 10, INF = 0x3f3f3f3f;
@@ -731,7 +616,7 @@ bool spfa()
 }
 ```
 
-## 2.13. 克鲁斯卡尔算法 Kruskal
+## 2.13 克鲁斯卡尔算法 Kruskal
 
 时间复杂度：$O(\left|E\right|\log\left|V\right|)$
 
@@ -789,9 +674,9 @@ int kruskal()
 }
 ```
 
-## 2.14. 普林姆算法 Prim
+## 2.14 普林姆算法 Prim
 
-### 2.14.1. 朴素（适合稠密图）
+### 2.14.1 朴素（适合稠密图）
 
 时间复杂度：$O(\left|V\right|^2)$
 
@@ -824,7 +709,7 @@ int prim()
 }
 ```
 
-### 2.14.2. 堆优化
+### 2.14.2 堆优化
 
 时间复杂度：$O((\left|E\right|+\left|V\right|)\log\left|V\right|)$
 
@@ -866,7 +751,7 @@ int prim()
 }
 ```
 
-## 2.15. 排序算法
+## 2.15 排序算法 Sort
 
 | 排序算法                  | 最好情况  | 平均情况  | 最坏情况  | 空间占用 | 稳定性     |
 | ------------------------- | --------- | --------- | --------- | -------- | ---------- |
@@ -880,7 +765,7 @@ int prim()
 | 计数排序 (Counting sort)  | $-$       | $n+r$     | $n+r$     | $n+r$    | $\text{Y}$ |
 | 桶排序 (Bucket sort)      | $-$       | $n+r$     | $n+r$     | $n+r$    | $\text{Y}$ |
 
-### 2.15.1. 冒泡
+### 2.15.1 冒泡
 
 ```cpp
 void bubble_sort(int arr[], int l, int r)
@@ -902,7 +787,7 @@ void bubble_sort(int arr[], int l, int r)
 }
 ```
 
-### 2.15.2. 选择
+### 2.15.2 选择
 
 ```cpp
 void selection_sort(int arr[], int l, int r)
@@ -921,7 +806,7 @@ void selection_sort(int arr[], int l, int r)
 }
 ```
 
-### 2.15.3. 插入
+### 2.15.3 插入
 
 ```cpp
 void insertion_sort(int arr[], int l, int r)
@@ -940,7 +825,7 @@ void insertion_sort(int arr[], int l, int r)
 }
 ```
 
-### 2.15.4. 归并
+### 2.15.4 归并
 
 ```cpp
 const int MAXN = 100;
@@ -969,7 +854,7 @@ void merge_sort(int arr[], int l, int r)
 }
 ```
 
-### 2.15.5. 快速
+### 2.15.5 快速
 
 ```cpp
 void quicksort(int arr[], int l, int r)
@@ -993,9 +878,9 @@ void quicksort(int arr[], int l, int r)
 }
 ```
 
-## 2.16. 二分图
+## 2.16 二分图 Bipartite Graph
 
-### 2.16.1. 染色法判二分图
+### 2.16.1 染色法判二分图
 
 时间复杂度：$O(\left|V\right|+\left|E\right|)$
 
@@ -1043,7 +928,7 @@ for (int i = 1; i <= V; i++)
 }
 ```
 
-### 2.16.2. 最大匹配 匈牙利算法  Hungarian Algorithm
+### 2.16.2 最大匹配 匈牙利算法  Hungarian Algorithm
 
 时间复杂度：$O(\left|V\right|\cdot \left|E\right|)$
 
@@ -1061,14 +946,11 @@ bool vis[SIZE];         // 标记n2中的某个顶点是否已经匹配过
 
 bool find(int x)
 {
-    // 遍历所有与x连接的n2内的顶点i
-    for (auto i : edge[x])
+    for (auto i : edge[x]) // 遍历所有与x连接的n2内的顶点i
     {
-        // 如果顶点i本轮还未匹配过
-        if (!vis[i])
+        if (!vis[i]) // 如果顶点i本轮还未匹配过
         {
-            // 将其标记
-            vis[i] = true;
+            vis[i] = true; // 将其标记
             // 若顶点i还没有匹配到任何n1中顶点，则直接把i与x匹配
             // 如果i已经匹配上，则查询与i匹配的n1中的元素能否换一个匹配，若可以，则将i与x匹配
             if (match[i] == 0 || find(match[i]))
@@ -1078,8 +960,7 @@ bool find(int x)
             }
         }
     }
-    // 如果没法匹配上，返回false
-    return false;
+    return false; // 如果没法匹配上，返回false
 }
 
 int main(void)
@@ -1089,17 +970,13 @@ int main(void)
     {
         int u, v;
         cin >> u >> v;
-        // 只用得到从n1到n2的边，因此只存了单向边
-        edge[u].push_back(v);
+        edge[u].push_back(v); // 只用得到从n1到n2的边，因此只存了单向边
     }
     int cnt = 0; // 匹配的数量
-    // 从n1第一个元素开始，尝试匹配到最后一个元素
-    for (int i = 1; i <= n1; i++)
+    for (int i = 1; i <= n1; i++) // 从n1第一个元素开始，尝试匹配到最后一个元素
     {
-        // 先清空所有n2的访问情况
-        memset(vis, false, sizeof(vis));
-        // 如果匹配上则匹配数+1
-        if (find(i))
+        memset(vis, false, sizeof(vis)); // 先清空所有n2的访问情况
+        if (find(i)) // 如果匹配上则匹配数+1
             cnt++;
     }
     cout << cnt << endl;
@@ -1107,26 +984,21 @@ int main(void)
 }
 ```
 
-## 2.17. 背包模型
+## 2.17 背包模型
 
-### 2.17.1. 0/1 背包
+### 2.17.1 0/1 背包
 
 时间复杂度：$O(N\cdot V)$
 
 空间复杂度：$O(N\cdot V)$
 
 ```cpp
-#include <iostream>
-#include <algorithm>
-
-using namespace std;
-
 const int SIZE = 1010;
 int N, V;             // N-物品数量 V-背包容积
 int v[SIZE], w[SIZE]; // v-体积 w-价值
 int dp[SIZE][SIZE];   // 二维动态规划
 
-int main()
+void solve()
 {
     cin >> N >> V;
     for (int i = 1; i <= N; i++)
@@ -1141,7 +1013,6 @@ int main()
         }
     }
     cout << dp[N][V] << endl;
-    return 0;
 }
 ```
 
@@ -1150,17 +1021,12 @@ int main()
 空间复杂度：$O(V)$
 
 ```cpp
-#include <iostream>
-#include <algorithm>
-
-using namespace std;
-
 const int SIZE = 1010;
 int N, V;             // N-物品数量 V-背包容积
 int v[SIZE], w[SIZE]; // v-体积 w-价值
 int dp[SIZE];         // 一维动态规划
 
-int main()
+void solve()
 {
     cin >> N >> V;
     for (int i = 1; i <= N; i++)
@@ -1169,28 +1035,22 @@ int main()
         for (int j = V; j >= v[i]; j--)
             dp[j] = max(dp[j], dp[j - v[i]] + w[i]);
     cout << dp[V] << endl;
-    return 0;
 }
 ```
 
-### 2.17.2. 完全背包
+### 2.17.2 完全背包
 
 时间复杂度：$O(N\cdot V^2)$ (最坏情况)
 
 空间复杂度：$O(N\cdot V)$
 
 ```cpp
-#include <iostream>
-#include <algorithm>
-
-using namespace std;
-
 const int SIZE = 1010;
 int N, V;
 int v[SIZE], w[SIZE];
 int dp[SIZE][SIZE];
 
-int main()
+void solve()
 {
     cin >> N >> V;
     for (int i = 1; i <= N; i++)
@@ -1200,7 +1060,6 @@ int main()
             for (int k = 0; k * v[i] <= j; k++)
                 dp[i][j] = max(dp[i][j], dp[i - 1][j - k * v[i]] + k * w[i]);
     cout << dp[N][V] << endl;
-    return 0;
 }
 ```
 
@@ -1209,17 +1068,12 @@ int main()
 空间复杂度：$O(N\cdot V)$
 
 ```cpp
-#include <iostream>
-#include <algorithm>
-
-using namespace std;
-
 const int SIZE = 1010;
 int N, V;
 int v[SIZE], w[SIZE];
 int dp[SIZE][SIZE];
 
-int main()
+void solve()
 {
     cin >> N >> V;
     for (int i = 1; i <= N; i++)
@@ -1234,7 +1088,6 @@ int main()
         }
     }
     cout << dp[N][V] << endl;
-    return 0;
 }
 ```
 
@@ -1243,17 +1096,12 @@ int main()
 空间复杂度：$O(V)$
 
 ```cpp
-#include <iostream>
-#include <algorithm>
-
-using namespace std;
-
 const int SIZE = 1010;
 int N, V;
 int v[SIZE], w[SIZE];
 int dp[SIZE];
 
-int main()
+void solve()
 {
     cin >> N >> V;
     for (int i = 1; i <= N; i++)
@@ -1262,28 +1110,22 @@ int main()
         for (int j = v[i]; j <= V; j++)
             dp[j] = max(dp[j], dp[j - v[i]] + w[i]);
     cout << dp[V] << endl;
-    return 0;
 }
 ```
 
-### 2.17.3. 多重背包
+### 2.17.3 多重背包
 
 时间复杂度：$O(N\cdot V^2)$ (最坏情况)
 
 空间复杂度：$O(V)$
 
 ```cpp
-#include <iostream>
-#include <algorithm>
-
-using namespace std;
-
 const int SIZE = 1010;
 int N, V;
 int v[SIZE], w[SIZE], s[SIZE];
 int dp[SIZE];
 
-int main()
+void solve()
 {
     cin >> N >> V;
     for (int i = 1; i <= N; i++)
@@ -1293,7 +1135,6 @@ int main()
             for (int k = 0; k * v[i] <= j && k <= s[i]; k++)
                 dp[j] = max(dp[j], dp[j - k * v[i]] + k * w[i]);
     cout << dp[V] << endl;
-    return 0;
 }
 ```
 
@@ -1302,28 +1143,20 @@ int main()
 空间复杂度：$O(V)$ (已包含空间优化)
 
 ```cpp 
-#include <iostream>
-#include <algorithm>
-
-using namespace std;
-
-// 需要注意各个数组的大小
-const int SIZE_NlogS = 25000, SIZE_V = 2010;
+const int SIZE_NlogS = 25000, SIZE_V = 2010; // 需要注意各个数组的大小
 int N, V, idx;
 int v[SIZE_NlogS], w[SIZE_NlogS];
 int dp[SIZE_V];
 
-int main()
+void solve()
 {
-    cin >> N >> V;
-    // 物品读入
+    cin >> N >> V; // 物品读入
     for (int i = 1; i <= N; i++)
     {
         int a, b, s;
         cin >> a >> b >> s;
         int k = 1;
-        // 物品打包
-        while (k <= s)
+        while (k <= s) // 物品打包
         {
             v[++idx] = a * k;
             w[idx] = b * k;
@@ -1341,7 +1174,6 @@ int main()
         for (int j = V; j >= v[i]; j--)
             dp[j] = max(dp[j], dp[j - v[i]] + w[i]);
     cout << dp[V] << endl;
-    return 0;
 }
 ```
 
@@ -1350,12 +1182,7 @@ int main()
 空间复杂度：$O(V)$ (已包含空间优化) 
 
 ```cpp
-#include <bits/stdc++.h>
-#define endl '\n'
-
-using namespace std;
-
-int main()
+void solve()
 {
     int N, V;
     cin >> N >> V;
@@ -1382,27 +1209,22 @@ int main()
         }
     }
     cout << dp[V] << endl;
-    return 0;
 }
 ```
 
-### 2.17.4. 分组背包
+### 2.17.4 分组背包
 
 时间复杂度：$O(V\cdot\sum{S})$
 
 空间复杂度：$O(V)$ (已包含空间优化) 
 
 ```cpp
-#include <bits/stdc++.h>
-
-using namespace std;
-
 const int SIZE = 110;
 int N, V;
 int v[SIZE][SIZE], w[SIZE][SIZE], S[SIZE];
 int dp[SIZE];
 
-int main()
+void solve()
 {
     cin >> N >> V;
     for (int i = 1; i <= N; i++)
@@ -1417,18 +1239,12 @@ int main()
                 if (v[i][k] <= j)
                     dp[j] = max(dp[j], dp[j - v[i][k]] + w[i][k]);
     cout << dp[V] << endl;
-    return 0;
 }
 ```
 
-### 2.17.5. 混合背包
+### 2.17.5 混合背包
 
 ```cpp
-#include <bits/stdc++.h>
-#define endl '\n'
-
-using namespace std;
-
 void solve()
 {
     int N, V;
@@ -1467,20 +1283,11 @@ void solve()
     }
     cout << dp[V] << endl;
 }
-
-signed main()
-{
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-    solve();
-    return 0;
-}
 ```
 
-## 2.18. 高精度
+## 2.18 高精度 Big Integer
 
-### 2.18.1. I/O
+### 2.18.1 I/O
 
 ```cpp
 /* 变量 */
@@ -1497,7 +1304,7 @@ for (int i = A.size() - 1; i >= 0; i--)
     cout << A[i]; // 反向输出整型数组每一位
 ```
 
-### 2.18.2. BI + BI
+### 2.18.2 BI + BI
 
 ```cpp
 vector<int> add(vector<int> &A, vector<int> &B)
@@ -1520,7 +1327,7 @@ vector<int> add(vector<int> &A, vector<int> &B)
 }
 ```
 
-### 2.18.3. BI - BI
+### 2.18.3 BI - BI
 
 ```cpp
 vector<int> sub(vector<int> &A, vector<int> &B)
@@ -1561,7 +1368,7 @@ int main()
 }
 ```
 
-### 2.18.4. BI * I
+### 2.18.4 BI * I
 
 ```cpp
 vector<int> mul(vector<int> &A, int b)
@@ -1581,7 +1388,7 @@ vector<int> mul(vector<int> &A, int b)
 }
 ```
 
-### 2.18.5. BI / I
+### 2.18.5 BI / I
 
 ```cpp
 vector<int> div(vector<int> &A, int b, int &r)
@@ -1601,7 +1408,7 @@ vector<int> div(vector<int> &A, int b, int &r)
 }
 ```
 
-## 2.19. 贝尔曼-福特算法 Bellman-Ford
+## 2.19 贝尔曼-福特算法 Bellman-Ford
 
 解决赋权图的单源最短路径问题，能解决负边，能解决负环。
 
@@ -1633,9 +1440,9 @@ int bellman_ford()
 }
 ```
 
-## 2.20. 矩阵加速算法
+## 2.20 矩阵加速算法
 
-### 2.20.1. $n$ 阶方阵乘法
+### 2.20.1 $n$ 阶方阵乘法
 
 ```cpp
 vector<vector<ll>> mat_mul(vector<vector<ll>> a, vector<vector<ll>> b, ll mod)
@@ -1650,7 +1457,7 @@ vector<vector<ll>> mat_mul(vector<vector<ll>> a, vector<vector<ll>> b, ll mod)
 }
 ```
 
-### 2.20.2. 矩阵快速幂
+### 2.20.2 矩阵快速幂
 
 ```cpp
 vector<vector<ll>> mat_pow(vector<vector<ll>> a, ll b, ll mod)
@@ -1670,22 +1477,18 @@ vector<vector<ll>> mat_pow(vector<vector<ll>> a, ll b, ll mod)
 }
 ```
 
-## 2.21. 最长上升子序列 Longest Increasing Subsequence
+## 2.21 最长上升子序列 Longest Increasing Subsequence
 
-### 2.21.1. 动态规划
+### 2.21.1 动态规划
 
 时间复杂度：$O(n^2)$ 
 
 ```cpp
-#include <bits/stdc++.h>
-
-using namespace std;
-
 const int MAXN = 1010;
 int N, a[MAXN];
 int dp[MAXN];
 
-int main()
+void solve()
 {
     a[0] = INT32_MIN;
     cin >> N;
@@ -1699,24 +1502,19 @@ int main()
     for (int i = 1; i <= N; i++)
         ans = max(ans, dp[i]);
     cout << ans << endl;
-    return 0;
 }
 ```
 
-### 2.21.2. 贪心、二分、单调栈
+### 2.21.2 贪心、二分、单调栈
 
 时间复杂度：$O(n\log n)$
 
 ```cpp
-#include <bits/stdc++.h>
-
-using namespace std;
-
 const int MAXN = 1e5 + 10;
 int N, a[MAXN];
 vector<int> v;
 
-int main()
+void solve()
 {
     cin >> N;
     for (int i = 1; i <= N; i++)
@@ -1730,13 +1528,12 @@ int main()
             v[lower_bound(v.begin(), v.end(), a[i]) - v.begin()] = a[i];
     }
     cout << v.size() << endl;
-    return 0;
 }
 ```
 
-## 2.22. 最长公共上升子序列 Longest Common Increasing Subsequence
+## 2.22 最长公共上升子序列 Longest Common Increasing Subsequence
 
-### 2.22.1. 三重循环 DP
+### 2.22.1 三重循环 DP
 
 时间复杂度：$O(n^3)$
 
@@ -1769,7 +1566,7 @@ void solve()
 }
 ```
 
-### 2.22.2. 将 DP 进行简化
+### 2.22.2 将 DP 进行简化
 
 时间复杂度：$O(n^2)$
 
@@ -1803,9 +1600,9 @@ void solve()
 }
 ```
 
-## 2.23. 最近公共祖先 Lowest Common Ancestor
+## 2.23 最近公共祖先 Lowest Common Ancestor
 
-### 2.23.1. 倍增法
+### 2.23.1 倍增法
 
 预处理：$O(V\log d)$，其中 $d$ 为树的深度。
 
@@ -1855,7 +1652,7 @@ int lca(int a, int b)
 }
 ```
 
-### 2.23.2. 树链剖分
+### 2.23.2 树链剖分
 
 预处理：$O(n)$
 
@@ -1875,11 +1672,11 @@ int lca(int u, int v)
 }
 ```
 
-## 2.24. 树链剖分（重链剖分）
+## 2.24 树链剖分（重链剖分）
 
 链式前向星存图，下标从 $1$ 开始。
 
-### 2.24.1. 剖分
+### 2.24.1 剖分
 
 ```cpp
 void dfs1(int now)
@@ -1893,9 +1690,8 @@ void dfs1(int now)
             continue;
         fa[nxt] = now;
         dep[nxt] = dep[now] + 1;
-        /* 如果是边权
-        val[nxt] = w[i];
-        */
+        /* 如果是边权 */
+        // val[nxt] = w[i];
         dfs1(nxt);
         siz[now] += siz[nxt];
         if (son[now] == -1 || siz[son[now]] < siz[nxt])
@@ -1923,7 +1719,7 @@ void dfs2(int now, int tp)
 }
 ```
 
-### 2.24.2. 操作
+### 2.24.2 操作
 
 ```cpp
 int do_something(int a, int b)
@@ -1950,11 +1746,12 @@ int do_something(int a, int b)
 }
 ```
 
-## 2.25. 字符串哈希
+## 2.25 字符串哈希
 
-### 2.25.1. 哈希
+### 2.25.1 哈希
 
-$p$ 可取 $131,13331$，模可使用自然溢出。
+- $p=131,13331,233,449$
+- $m=10^9+7,998244353,998244853,436522843,2^{64}$
 
 ```cpp
 typedef long long ll;
@@ -1969,7 +1766,7 @@ ll get_hash(string &s)
 }
 ```
 
-### 2.25.2. 子串哈希
+### 2.25.2 子串哈希
 
 预处理：$O(n)$
 
@@ -2003,7 +1800,7 @@ struct StrHash
 };
 ```
 
-### 2.25.3. 允许 $k$ 次失配的匹配
+### 2.25.3 允许 $k$ 次失配的匹配
 
 ```cpp
 /* 依赖上文的StrHash结构体 */
@@ -2037,9 +1834,9 @@ bool check(StrHash &a, StrHash &b, int toler)
 }
 ```
 
-## 2.26. Manacher 算法
+## 2.26 Manacher 算法
 
-### 2.26.1. 预处理
+### 2.26.1 预处理
 
 ```cpp
 string pre_process(string &s)
@@ -2056,7 +1853,7 @@ string pre_process(string &s)
 }
 ```
 
-### 2.26.2. 马拉车
+### 2.26.2 马拉车
 
 ```cpp
 // s - 字符串（下标1开始，需要预处理）
@@ -2078,7 +1875,7 @@ void manacher(string &s, vector<int> &p)
 }
 ```
 
-## 2.27. 拓扑排序 Topo Sort
+## 2.27 拓扑排序 Topo Sort
 
 时间复杂度：$O(V+E)$
 
@@ -2117,9 +1914,11 @@ bool topo_sort(int n) // n - vertice cnt
 }
 ```
 
-## 2.28. 莫队 Mo's Algorithm
+## 2.28 莫队 Mo's Algorithm
 
 若存在一个长度为 $n$ 的序列，对于序列上的 $m$ 个区间询问问题，如果一个区间答案能够在 $O(1)$ 转移到相邻区间的答案，那么可以通过莫队算法在 $O(n\sqrt m)$ 的复杂度求出所有询问。
+
+### 2.28.1 普通莫队
 
 ```cpp
 int cur_ans = 0; // current answer
@@ -2151,13 +1950,68 @@ void solve()
 }
 ```
 
-# 3. 数据结构
+### 2.28.2 带修改莫队
 
-## 3.1. 单调队列 Monotonic Queue
+```cpp
+struct Query
+{
+    int idx, l, r, ver;
+
+    bool operator<(Query b)
+    {
+        if (l / block != b.l / block)
+            return l < b.l;
+        else if (r / block != b.r / block)
+            return r < b.r;
+        else
+            return ver < b.ver;
+    }
+};
+
+struct Modif
+{
+    int pos, color;
+};
+```
+
+```cpp
+for (int i = 1; i <= now_idx; i++)
+{
+    while (l > qu[i].l) add(c[--l]);
+    while (r < qu[i].r) add(c[++r]);
+    while (l < qu[i].l) del(c[l++]);
+    while (r > qu[i].r) del(c[r--]);
+    while (time < qu[i].ver)
+    {
+        time++;
+        if (l <= mo[time].pos && mo[time].pos <= r)
+        {
+            add(mo[time].color);
+            del(c[mo[time].pos]);
+        }
+        swap(mo[time].color, c[mo[time].pos]);
+    }
+    while (time > qu[i].ver)
+    {
+        if (l <= mo[time].pos && mo[time].pos <= r)
+        {
+            add(mo[time].color);
+            del(c[mo[time].pos]);
+        }
+        swap(mo[time].color, c[mo[time].pos]);
+        time--;
+    }
+    ans[qu[i].idx] = cur;
+}
+```
+
+# 3 数据结构 Data Structure
+
+## 3.1 单调队列 Monotonic Queue
 
 时间复杂度：$O(n)$
 
-### 3.1.1. STL 队列
+### 3.1.1 STL 队列
 
 ```cpp
 // val[ ]: 储存数据的数组
@@ -2166,25 +2020,20 @@ void solve()
 // q: STL双向队列，储存val[ ]中元素的数组序号
 deque<int> q;
 for (int i = 0; i < n; i++)
-{
-    // 去尾操作
-    while (!q.empty() && val[q.back()] > val[i])
+{    
+    while (!q.empty() && val[q.back()] > val[i]) // 去尾操作
         q.pop_back();
-    // 新元素（的序号）入队
-    q.push_back(i);
-    // 判断是否需要进行下面两个操作
-    if (i >= k - 1)
+    q.push_back(i); // 新元素（的序号）入队
+    if (i >= k - 1) // 判断是否需要进行下面两个操作
     {
-        // 删头操作
-        if (q.front() < i - k + 1)
+        if (q.front() < i - k + 1) // 删头操作
             q.pop_front();
-        // 输出操作
-        cout << val[q.front()] << ' ';
+        cout << val[q.front()] << ' '; // 输出操作
     }
 }
 ```
 
-### 3.1.2. 数组队列
+### 3.1.2 数组队列
 
 ```cpp
 // val[ ]: 储存数据的数组
@@ -2207,9 +2056,9 @@ for (int i = 0; i < n; i++)
 }
 ```
 
-## 3.2. 并查集 Disjoint Set Union
+## 3.2 并查集 Disjoint Set Union
 
-### 3.2.1. 朴素
+### 3.2.1 朴素
 
 ```cpp
 // 朴素版并查集（不推荐使用）
@@ -2234,7 +2083,7 @@ inline void merge(int i, int j)
 }
 ```
 
-### 3.2.2. 路径压缩
+### 3.2.2 路径压缩
 
 ```cpp
 // 路径压缩版并查集（最常使用）
@@ -2256,7 +2105,7 @@ inline void merge(int i, int j)
 }
 ```
 
-### 3.2.3. 路径压缩、按秩合并
+### 3.2.3 路径压缩、按秩合并
 
 ```cpp
 int fa[MAXN], rnk[MAXN];
@@ -2286,7 +2135,7 @@ void merge(int i, int j)
 }
 ```
 
-### 3.2.4. 维护集合数量
+### 3.2.4 维护集合数量
 
 ```cpp
 int fa[MAXN], sz[MAXN];
@@ -2318,7 +2167,7 @@ inline void merge(int x, int y)
 }
 ```
 
-### 3.2.5. 到根节点的距离
+### 3.2.5 到根节点的距离
 
 ```cpp
 int fa[MAXN], ds[MAXN];
@@ -2345,9 +2194,9 @@ void merge(int a, int b, int r) // r为两节点的距离关系
 }
 ```
 
-## 3.3. 链式前向星
+## 3.3 链式前向星
 
-### 3.3.1. 数组，下标从 0
+### 3.3.1 数组，下标从 0
 
 h 初始化为 -1
 
@@ -2370,7 +2219,7 @@ for (int i = h[x]; ~i; i = ne[i])
 }
 ```
 
-### 3.3.2. 数组，下标从 1
+### 3.3.2 数组，下标从 1
 
 h 初始化为 0
 
@@ -2393,7 +2242,7 @@ for (int i = h[x]; i; i = ne[i])
 }
 ```
 
-### 3.3.3. 结构体
+### 3.3.3 结构体
 
 ```cpp
 struct EDGE
@@ -2427,7 +2276,7 @@ for (int i = head[x]; i != -1; i = edge[j].next)
 }
 ```
 
-## 3.4. 树状数组 Fenwick Tree
+## 3.4 树状数组 Fenwick Tree
 
 时间复杂度：$O(\log n)$
 
@@ -2459,7 +2308,7 @@ void update(int pos, int val)
 }
 ```
 
-## 3.5. 字典树 Trie
+## 3.5 字典树 Trie
 
 时间复杂度：$O(m)$. $m$ 为待操作字符串的长度
 
@@ -2494,9 +2343,9 @@ int query(char str[])
 }
 ```
 
-## 3.6. 堆 Heap
+## 3.6 堆 Heap
 
-### 3.6.1. 上下滤
+### 3.6.1 上下滤
 
 ```cpp
 const int MAXN = 1e6 + 10; // 堆的最大大小
@@ -2527,18 +2376,18 @@ void down(int u)
 }
 ```
 
-### 3.6.2. 建堆
+### 3.6.2 建堆
 
 ```cpp
 for (int i = n / 2; i > 0; i--)
     down(i);
 ```
 
-### 3.6.3. 取得堆中最小值
+### 3.6.3 取得堆中最小值
 
 堆顶即为最小值。
 
-### 3.6.4. 插入
+### 3.6.4 插入
 
 ```cpp
 // num 为待插入的数
@@ -2546,7 +2395,7 @@ heap[++idx] = num;
 up(idx);
 ```
 
-### 3.6.5. 删除
+### 3.6.5 删除
 
 ```cpp
 // id 为待删除节点的编号
@@ -2555,7 +2404,7 @@ up(id);
 down(id);
 ```
 
-### 3.6.6. 修改
+### 3.6.6 修改
 
 ```cpp
 // id 为待修改节点的编号，num 为新数值
@@ -2564,7 +2413,7 @@ up(id);
 down(id);
 ```
 
-### 3.6.7. 带映射关系的堆
+### 3.6.7 带映射关系的堆
 
 ```cpp
 // 注意该函数的形参 a, b 是下标，和内置的 swap 函数不同。
@@ -2615,9 +2464,9 @@ inline void modify(int id, int num)
 }
 ```
 
-## 3.7. 哈希表 Hash Table
+## 3.7 哈希表 Hash Table
 
-### 3.7.1. 开放寻址法 Open Addressing
+### 3.7.1 开放寻址法 Open Addressing
 
 ```cpp
 // 开放寻址法
@@ -2657,7 +2506,7 @@ bool query(int x) // 查询x是否在表内
 }
 ```
 
-### 3.7.2. 单独链表法 Separate Chaining
+### 3.7.2 单独链表法 Separate Chaining
 
 ```cpp
 /* 单独链表法 使用数组模拟链表实现 */
@@ -2692,7 +2541,7 @@ bool query(int x) // 查询x是否在表内
 }
 ```
 
-## 3.8. ST 表 Sparse Table
+## 3.8 ST 表 Sparse Table
 
 在 $O(n\log n)$ 完成初始化，在 $O(1)$ 回答每个区间查询。不支持修改数据。
 
@@ -2721,7 +2570,7 @@ int query(int l, int r)
 
 ## 3.9 线段树 Segment Tree
 
-### 3.9.1. 区间和；区间加
+### 3.9.1 区间和；区间加
 
 ```cpp
 /* 线段树: 维护区间和, 支持区间加, 使用懒惰标记 */
@@ -2795,7 +2644,7 @@ namespace segtree
 };
 ```
 
-### 3.9.2. 区间和；区间修改
+### 3.9.2 区间和；区间修改
 
 ```cpp
 /* 线段树: 维护区间和, 支持区间修改, 使用懒惰标记 */
@@ -2873,7 +2722,7 @@ namespace segtree
 };
 ```
 
-### 3.9.3. 区间和；区间加、区间乘
+### 3.9.3 区间和；区间加、区间乘
 
 ```cpp
 /* 线段树: 维护区间和, 支持区间加与乘, 使用懒惰标记 */
@@ -2977,7 +2826,7 @@ namespace segtree
 };
 ```
 
-### 3.9.4. 权值线段树
+### 3.9.4 权值线段树
 
 第 $k$ 小
 
@@ -3323,9 +3172,9 @@ struct MergeSortTree
 };
 ```
 
-# 4. 数论
+# 4 数论 Number theory
 
-## 4.1. 模逆元
+## 4.1 模逆元
 
 $ab\equiv1\pmod p$，知 $a,p$ 求 $b$.
 
@@ -3334,13 +3183,13 @@ $ab\equiv1\pmod p$，知 $a,p$ 求 $b$.
   - $p$ 为质数：费马小定理 $b=a^{p-2}\pmod p$，用快速幂算。
   - $p$ 为合数：扩展欧几里得算法求逆元。**（千万不可直接快速幂）**
 
-## 4.2. 算术基本定理
+## 4.2 算术基本定理 Fundamental theorem of arithmetic
 
 定理：任何一个大于 $1$ 的自然数 $N$，如果 $N$ 不为质数，那么 $N$ 可以唯一分解成有限个质数的乘积 $N=P_1^{a_1}P_2^{a_2}P_3^{a_3}\cdots P_n^{a_n}$，$P_1<P_2<P_3<\cdots<P_n$ 且均为质数，$a_1,a_2,a_3,\cdots,a_n$ 均为正整数。 
 
 推论：一个大于 $1$ 的整数 $N$，如果它的标准分解式为 $N=P_1^{a_1}P_2^{a_2}P_3^{a_3}\cdots P_n^{a_n}$，那么它的正因数个数为 $\sigma_0(N)=(1+a_1)(1+a_2)\cdots(1+a_n)$
 
-### 4.2.1. 求正因数个数
+### 4.2.1 求正因数个数
 
 ```cpp
 bool is_prime[SIZE];
@@ -3365,7 +3214,7 @@ int fact_cnt(int n)
 }
 ```
 
-### 4.2.2. 判断正因数之和奇偶性
+### 4.2.2 判断正因数之和奇偶性
 
 需要以下结论：
 
@@ -3395,7 +3244,7 @@ int fact_cnt(int n)
 
 代码实现非常简单，略去。
 
-## 4.3. 欧拉函数
+## 4.3 欧拉函数 Euler's totient function
 
 对正整数 $n$，欧拉函数是小于 $n$ 的正整数中与 $n$ 互质的数的数目，记作 $\varphi(n)$。
 
@@ -3405,7 +3254,7 @@ $$
 $$
 需要注意：$\varphi(1)=1$
 
-### 4.3.1. 朴素法
+### 4.3.1 朴素法
 
 时间复杂度：$O(\sqrt{n})$ 
 
@@ -3437,7 +3286,7 @@ int main()
 }
 ```
 
-### 4.3.2. 线性筛法
+### 4.3.2 线性筛法
 
 时间复杂度：$O(n)$
 
@@ -3474,7 +3323,7 @@ void init(int n)
 }
 ```
 
-## 4.4. 扩展欧几里得算法 Extended Euclidean algorithm
+## 4.4 扩展欧几里得算法 Extended Euclidean algorithm
 
 ```cpp
 int exgcd(int a, int b, int &x, int &y)
@@ -3502,7 +3351,7 @@ int inv(int a, int p)
 }
 ```
 
-## 4.5. 扩展中国剩余定理 exCRT
+## 4.5 扩展中国剩余定理 exCRT
 
 有以下一元线性同余方程组：
 $$
@@ -3544,7 +3393,7 @@ pair<ll, ll> excrt(pair<ll, ll> a, pair<ll, ll> b)
 }
 ```
 
-## 4.6. 高斯消元法 Gaussian Elimination
+## 4.6 高斯消元法 Gaussian Elimination
 
 ```cpp
 const int MAXN = 110;     // 最大方程数
@@ -3587,9 +3436,9 @@ int gauss()
 }
 ```
 
-## 4.7. 组合数
+## 4.7 组合数 Combination
 
-### 4.7.1. 公式法
+### 4.7.1 公式法
 
 $$
 C_n^k={n\choose k}=\frac{P_{k}^{n}}{k!}=\frac{n!}{k!(n-k)!}
@@ -3611,17 +3460,10 @@ void init()
     }
 }
 
-int main()
-{
-    init();
-    long long a, b;
-    cin >> a >> b;
-    cout << fact[a] * invf[b] % MOD * invf[a - b] % MOD << endl;
-    return 0;
-}
+// c_a^b = fact[a] * invf[b] % MOD * invf[a - b] % MOD
 ```
 
-### 4.7.2. 递推法
+### 4.7.2 递推法
 
 $$
 C_n^k=C_{n-1}^{k}+C_{n-1}^{k-1}
@@ -3644,7 +3486,7 @@ void init()
 }
 ```
 
-### 4.7.3. 卢卡斯定理
+### 4.7.3 卢卡斯定理
 
 $$
 C_{m}^{n}\equiv C_{m/p}^{n/p}\cdot C_{m\bmod p}^{n\bmod p}\pmod p
@@ -3710,7 +3552,7 @@ int main()
 }
 ```
 
-### 4.7.4. 高精度算法
+### 4.7.4 高精度算法
 
 ```py
 a, b = input().split(' ')
@@ -3724,20 +3566,13 @@ for i in range(1, b + 1):
 print(res)
 ```
 
-## 4.8. 容斥原理
+## 4.8 容斥原理 Include-Exclude Principle
 
 $$
 {\displaystyle {\begin{aligned}\left|\bigcup _{i=1}^{n}A_{i}\right|={}&\sum _{i=1}^{n}|A_{i}|-\sum _{1\leq i<j\leq n}|A_{i}\cap A_{j}|+\sum _{1\leq i<j<k\leq n}|A_{i}\cap A_{j}\cap A_{k}|-\cdots +(-1)^{n-1}\left|A_{1}\cap \cdots \cap A_{n}\right|.\end{aligned}}}
 $$
 
-```cpp
-for (int i = 1; i < (1 << n); i++)
-    for (int j = 0; j < n; j++)
-        if (i >> j & 1)
-            ...
-```
-
-## 4.9. 哥德巴赫猜想 Goldbach Conjecture
+## 4.9 哥德巴赫猜想 Goldbach Conjecture
 
 - 任一大于 $2$ 的偶数，都可表示成两个素数之和。
 - 大于 $5$ 的奇数都可以表示成三个素数之和。
