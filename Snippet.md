@@ -2063,7 +2063,7 @@ for (int i = 0; i < n; i++)
 ```cpp
 // 朴素版并查集（不推荐使用）
 int fa[MAXN];
-inline void init(int n)
+void init(int n)
 {
     for (int i = 1; i <= n; i++)
         fa[i] = i;
@@ -2077,7 +2077,7 @@ int find(int x)
         return find(fa[x]);
 }
 
-inline void merge(int i, int j)
+void merge(int i, int j)
 {
     fa[find(i)] = find(j);
 }
@@ -2088,7 +2088,7 @@ inline void merge(int i, int j)
 ```cpp
 // 路径压缩版并查集（最常使用）
 int fa[MAXN];
-inline void init(int n)
+void init(int n)
 {
     for (int i = 1; i <= n; i++)
         fa[i] = i;
@@ -2099,17 +2099,17 @@ int find(int x)
     return x == fa[x] ? x : (fa[x] = find(fa[x])); // 注1
 }
 
-inline void merge(int i, int j)
+void merge(int i, int j)
 {
     fa[find(i)] = find(j);
 }
 ```
 
-### 3.2.3 路径压缩、按秩合并
+### 3.2.3 启发式合并（按秩）
 
 ```cpp
 int fa[MAXN], rnk[MAXN];
-inline void init(int n)
+void init(int n)
 {
     for (int i = 1; i <= n; i++)
     {
@@ -2126,25 +2126,26 @@ int find(int x)
 void merge(int i, int j)
 {
     int x = find(i), y = find(j);
-    if (rnk[x] <= rnk[y])
-        fa[x] = y;
-    else
-        fa[y] = x;
-    if (rnk[x] == rnk[y] && x != y)
-        rnk[y]++;
+    if (x == y)
+    	return;
+    if (rnk[x] < rnk[y])
+        swap(x, y);
+    fa[y] = x;
+    if (rnk[x] == rnk[y])
+        rnk[x]++;
 }
 ```
 
-### 3.2.4 维护集合数量
+### 3.2.4 启发式合并（按节点数）
 
 ```cpp
 int fa[MAXN], sz[MAXN];
-inline void init(int n)
+void init(int n)
 {
     for (int i = 1; i <= n; i++)
     {
         fa[i] = i;
-        sz[i] = 1; // 全部初始化为1
+        sz[i] = 1;
     }
 }
 
@@ -2153,17 +2154,15 @@ int find(int x)
     return x == fa[x] ? x : (fa[x] = find(fa[x]));
 }
 
-inline int size(int x) // 查询一个集合的元素数量
+void merge(int i, int j)
 {
-    return sz[find(x)];
-}
-
-inline void merge(int x, int y)
-{
-    if (find(x) == find(y)) // 如果x,y在同一集合则跳过
+    int x = find(i), y = find(j);
+    if (x == y)
         return;
-    sz[find(y)] += sz[find(x)]; // 将待合并集合的元素数量加到目标集合的元素数量上
-    fa[find(x)] = find(y);
+    if (sz[x] < sz[y])
+        swap(x, y);
+    fa[y] = x;
+    sz[x] += sz[y];
 }
 ```
 
@@ -2316,12 +2315,12 @@ void update(int pos, int val)
 const int MAXN = 1e6 + 10;
 int son[MAXN][26], cnt[MAXN], idx;
 
-void insert(char str[])
+void insert(string &s)
 {
     int p = 0;
-    for (int i = 0; str[i]; i++)
+    for (int i = 0; i < s.size(); i++)
     {
-        int c = str[i] - 'a';
+        int c = s[i] - 'a';
         if (!son[p][c])
             son[p][c] = ++idx;
         p = son[p][c];
@@ -2329,12 +2328,12 @@ void insert(char str[])
     cnt[p]++;
 }
 
-int query(char str[])
+int query(string &s)
 {
     int p = 0;
-    for (int i = 0; str[i]; i++)
+    for (int i = 0; i < s.size(); i++)
     {
-        int c = str[i] - 'a';
+        int c = s[i] - 'a';
         if (!son[p][c])
             return 0;
         p = son[p][c];
